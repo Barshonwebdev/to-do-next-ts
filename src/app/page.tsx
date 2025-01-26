@@ -46,7 +46,7 @@ export default function Todo() {
     <div className="bg-white" >
       <h1 className= " text-center text-5xl mt-5">To Do App</h1>
       <div className="flex justify-center mt-8 space-x-2">
-        <input  onChange={(e)=> updateInput(e.target.value)} value={userInput} className="p-1 border border-gray border-2" type="text" />
+        <input  onChange={(e)=> updateInput(e.target.value)} value={userInput} className="p-1  border-gray border-2" type="text" />
         <button onClick={handleAddorEdit} className="bg-blue-500 text-white px-2 py-1 hover:bg-green-500">{editIndex !== null ? 'Update task' : 'Add task'}</button>
         
       </div>
