@@ -1,4 +1,3 @@
-// import { ObjectId } from "../../../node_modules/bson/bson";
 
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -36,10 +35,3 @@ export async function POST(request: Request){
   return Response.json({message: "successfully updated the document"})
 }
 
-// export async function DELETE(request:Request){
-//   await client.connect();
-//   const req= await request.json();
-//   const id=req._id;
-//   const result = await client.db('todo').collection("tasks").deleteOne({_id:id});
-//   return result;
-// }
