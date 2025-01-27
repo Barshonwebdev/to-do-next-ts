@@ -1,12 +1,21 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
-export default function Todo() {
+export default  function Todo() {
   const [userInput,setUserInput]=useState('');
   const [list,setList]=useState([]);
   const [editIndex,setEditIndex]=useState(null);
+
+  useEffect(()=>{
+    async function fetchTasks() {
+      const res= await fetch('http://localhost:3000/api');
+      const data= await res.json();
+      setList(data);
+    }
+    fetchTasks();
+  },[])
   //setting user input 
   const updateInput=(value)=>{
     setUserInput(value);
@@ -25,7 +34,7 @@ export default function Todo() {
   } else {
       // Add new item
       const newItem = {
-          id: Math.random(), // Consider using a more reliable ID generator
+         
           value: userInput,
       };
       setList([...list, newItem]);
@@ -33,7 +42,7 @@ export default function Todo() {
     setUserInput(' ');
 };
     const deleteItem = (id) => {
-      const updatedList = list.filter((item) => item.id !== id);
+      const updatedList = list.filter((item) => item._id !== id);
       setList(updatedList);
   };
 
@@ -50,12 +59,12 @@ export default function Todo() {
         <button onClick={handleAddorEdit} className="bg-blue-500 text-white px-2 py-1 hover:bg-green-500">{editIndex !== null ? 'Update task' : 'Add task'}</button>
         
       </div>
-      <div className="text-center mt-5">
+      <div className="text-center mt-5 space-y-5">
           {
             list.map((item,index)=>(
-            <div className="space-x-2" key={item.id}>
+            <div className="space-x-2 " key={item._id}>
               <span className=" text-green-500 text-2xl">{item.value}</span>
-              <span><button  onClick={() => deleteItem(item.id)} className="p-1 text-white bg-red-500 rounded">Delete</button></span>
+              <span><button  onClick={() => deleteItem(item._id)} className="p-1 text-white bg-red-500 rounded">Delete</button></span>
               <span><button  onClick={() => startEdit(index)} className="p-1 text-white bg-indigo-500 rounded">Edit</button></span>
             </div>
             ))

@@ -1,0 +1,35 @@
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://barshonweb:eYgyPnRe5YOXhQC3@cluster0.xm1pp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    const cursor = await client.db("todo").collection("tasks").find();
+      const array = await cursor.toArray()
+      return array;
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+export async function GET(request: Request) {
+  const data =  await run();
+  return Response.json(data)
+}
+
+export async function POST(request: Request){
+  const client = await connect;
+  const cursor = await client.db("todo").collection("tasks").insertOne({greeting:"Goodbye cruel world"});
+  return Response.json({message: "successfully updated the document"})
+}
