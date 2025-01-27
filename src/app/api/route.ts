@@ -1,7 +1,8 @@
+// import { ObjectId } from "../../../node_modules/bson/bson";
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://barshonweb:eYgyPnRe5YOXhQC3@cluster0.xm1pp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -31,6 +32,14 @@ export async function GET(request: Request) {
 export async function POST(request: Request){
   await client.connect();
   const body= await request.json()
-  const cursor = await client.db("todo").collection("tasks").insertOne({value:body.value});
+  const result = await client.db("todo").collection("tasks").insertOne({value:body.value});
   return Response.json({message: "successfully updated the document"})
 }
+
+// export async function DELETE(request:Request){
+//   await client.connect();
+//   const req= await request.json();
+//   const id=req._id;
+//   const result = await client.db('todo').collection("tasks").deleteOne({_id:id});
+//   return result;
+// }

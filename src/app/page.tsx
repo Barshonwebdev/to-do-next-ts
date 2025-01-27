@@ -1,18 +1,20 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "../../node_modules/next/navigation";
 
 
 export default  function Todo() {
   const [userInput,setUserInput]=useState('');
   const [list,setList]=useState([]);
   const [editIndex,setEditIndex]=useState(null);
-
+  
   useEffect(()=>{
     async function fetchTasks() {
       const res= await fetch('http://localhost:3000/api');
       const data= await res.json();
       setList(data);
+      
     }
     fetchTasks();
   },[])
@@ -30,7 +32,7 @@ export default  function Todo() {
           index === editIndex ? { ...item, value: userInput } : item
       );
       setList(updatedList);
-      setEditIndex(null); // Reset edit mode
+      setEditIndex(null); // Reset edit mode 
   } else {
       // Add new item
       const newItem = {
@@ -41,13 +43,21 @@ export default  function Todo() {
         method:"POST",
         body:JSON.stringify(newItem)
       })
-      //setList([...list, newItem]);
-  }
+      
+      setList([...list, newItem]);
+  } 
+  
     setUserInput(' ');
+    
 };
-    const deleteItem = (id) => {
+
+   async function deleteTask (id) {
+     await fetch(`/api/${id}`,{
+       method:"DELETE", 
+     }
+);
       const updatedList = list.filter((item) => item._id !== id);
-      setList(updatedList);
+      setList(updatedList); 
   };
 
   const startEdit = (index) => {
@@ -68,7 +78,7 @@ export default  function Todo() {
             list.map((item,index)=>(
             <div className="space-x-2 " key={item._id}>
               <span className=" text-green-500 text-2xl">{item.value}</span>
-              <span><button  onClick={() => deleteItem(item._id)} className="p-1 text-white bg-red-500 rounded">Delete</button></span>
+              <span><button  onClick={() => deleteTask(item._id)} className="p-1 text-white bg-red-500 rounded">Delete</button></span>
               <span><button  onClick={() => startEdit(index)} className="p-1 text-white bg-indigo-500 rounded">Edit</button></span>
             </div>
             ))
