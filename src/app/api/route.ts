@@ -29,7 +29,8 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request){
-  const client = await connect;
-  const cursor = await client.db("todo").collection("tasks").insertOne({greeting:"Goodbye cruel world"});
+  await client.connect();
+  const body= await request.json()
+  const cursor = await client.db("todo").collection("tasks").insertOne({value:body.value});
   return Response.json({message: "successfully updated the document"})
 }

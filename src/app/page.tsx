@@ -37,7 +37,11 @@ export default  function Todo() {
          
           value: userInput,
       };
-      setList([...list, newItem]);
+      fetch('/api',{
+        method:"POST",
+        body:JSON.stringify(newItem)
+      })
+      //setList([...list, newItem]);
   }
     setUserInput(' ');
 };
