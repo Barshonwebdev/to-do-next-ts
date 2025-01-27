@@ -26,10 +26,12 @@ export async function GET(request:NextRequest, { params }: { params: Promise<{ i
     return NextResponse.json(result); 
   }
 
-//   export async function PUT(request: NextRequest){
-//      await client.connect();
-//     const id = new ObjectId(request.nextUrl.searchParams.get("id"));
-//     if(!id) return null;
-//     await client.db("todo").collection("tasks").updateOne({_id: id}, {greeting:"this greeting has been updated"});
-//     return Response.json({message: "successfully updated the document"})  
-//   }
+  export async function PUT(request: NextRequest,{params}: {params: Promise<{id:string}>}){
+      const id=(await params).id;
+      const body=await request.json();
+      console.log(body);
+      if(!id) return null;
+     await client.connect();
+    await client.db("todo").collection("tasks").updateOne({_id:new ObjectId (id)}, {"$set":{"value":body.value}});
+    return NextResponse.json({message: "successfully updated the document"})  
+  }

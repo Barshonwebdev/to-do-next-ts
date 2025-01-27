@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "../../node_modules/next/navigation";
 
 
 export default  function Todo() {
@@ -33,6 +32,13 @@ export default  function Todo() {
       );
       setList(updatedList);
       setEditIndex(null); // Reset edit mode 
+      async function editTask(id){
+        await fetch(`/api/${id}`,{
+          method:"PUT",
+          body:JSON.stringify(userInput),
+        })
+      }
+    
   } else {
       // Add new item
       const newItem = {
