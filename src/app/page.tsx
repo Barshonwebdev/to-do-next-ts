@@ -72,23 +72,29 @@ export default  function Todo() {
 };
   
   return (
-    <div className="bg-white" >
+    <div className="bg-gray-100 flex flex-col justify-center py-8 w-1/2 mx-auto" >
       <h1 className= " text-center text-5xl mt-5">To Do App</h1>
-      <div className="flex justify-center mt-8 space-x-2">
-        <input  onChange={(e)=> updateInput(e.target.value)} value={userInput} className="p-1  border-gray border-2" type="text" />
+      <div className="  flex flex-col md:flex-row space-y-3 justify-center mt-8 space-x-2">
+        <input  onChange={(e)=> updateInput(e.target.value)} value={userInput} className="sm:mx-auto md:mx-0  border-gray border-2" type="text" />
         <button onClick={handleAddorEdit} className="bg-blue-500 text-white px-2 py-1 hover:bg-green-500">{editIndex !== null ? 'Update task' : 'Add task'}</button>
         
       </div>
-      <div className="text-center mt-5 space-y-5">
-          {
+      <div className="  mt-5 ">
+         <div className=" flex flex-col justify-center items-center" >
+         {
             list.map((item,index)=>(
-            <div className="space-x-2 " key={item._id}>
-              <span className=" text-green-500 text-2xl">{item.value}</span>
+            <div className=" flex flex-col " key={item._id}>
+              <div className="text-center">
+              <span className=" text-green-500 font-bold text-2xl">{item.value}</span>
+              </div>
+              <div className="space-x-2 flex justify-center items-center">
               <span><button  onClick={() => deleteTask(item._id)} className="p-1 text-white bg-red-500 rounded">Delete</button></span>
-              <span><button  onClick={() => startEdit(index)} className="p-1 text-white bg-indigo-500 rounded">Edit</button></span>
+              <span><button  onClick={() => startEdit(index)} className="p-1 text-white bg-orange-500 rounded">Edit</button></span>
+              </div>
             </div>
             ))
           }
+         </div>
         </div>
     </div>
   );
