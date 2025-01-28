@@ -13,15 +13,16 @@ export default  function Todo() {
       const res= await fetch('http://localhost:3000/api');
       const data= await res.json();
       setList(data);
-      
     }
     fetchTasks();
   },[])
+
   //setting user input 
   const updateInput=(value)=>{
     setUserInput(value);
   }
 
+  // edit task function 
   async function editTask(id){
     await fetch(`/api/${id}`,{
       method:"PUT",
@@ -32,6 +33,7 @@ export default  function Todo() {
     setList(data);
   }
 
+  // add task function 
   async function addTask(item){
     await fetch('/api',{
       method:"POST",
@@ -42,7 +44,8 @@ export default  function Todo() {
     setList(data);
 
   }
-  //add task or edit task
+
+  //Add or Edit handling function
   const handleAddorEdit=(id)=>{
     if (userInput.trim() === '') return;
     if (editItem !== null) {
@@ -57,17 +60,14 @@ export default  function Todo() {
   } else {
       // Add new item
       const newItem = {
-         
           value: userInput,
       };
-      addTask(newItem);
-      
+      addTask(newItem); 
   } 
-  
     setUserInput(' ');
-    
 };
 
+  // Delete task function 
    async function deleteTask (id) {
      await fetch(`/api/${id}`,{
        method:"DELETE", 
@@ -78,6 +78,7 @@ export default  function Todo() {
     setList(data);
   };
 
+  // Editing function 
   const startEdit = (item) => {
     setUserInput(item.value);
     setEditItem(item); 
@@ -89,7 +90,6 @@ export default  function Todo() {
       <div className="  flex flex-col md:flex-row mx-auto space-y-3 justify-center w-1/2 mt-8 space-x-2 ">
         <input placeholder="Add what you wanna do..." onChange={(e)=> updateInput(e.target.value)} value={userInput} className="sm:mx-auto md:mx-0  border-gray border-2 px-4" type="text" />
         <button onClick={()=>handleAddorEdit(editItem?._id)} className="bg-blue-500 rounded-lg text-white px-4 py-1 hover:bg-green-500">{editItem !== null ? 'Update task' : 'Add task'}</button>
-        
       </div>
       <div className="  mt-5 ">
         <h1 className="text-center text-gray-400 mb-3 text-lg">To Do List</h1>
