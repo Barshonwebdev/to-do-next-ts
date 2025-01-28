@@ -32,6 +32,6 @@ export async function GET(request:NextRequest, { params }: { params: Promise<{ i
       console.log(body);
       if(!id) return null;
      await client.connect();
-    await client.db("todo").collection("tasks").updateOne({_id:new ObjectId (id)}, {$set:{value:body.value}});
+    await client.db("todo").collection("tasks").updateOne({_id:new ObjectId (id)}, {$set:{value:body}});
     return NextResponse.json({message: "successfully updated the document"})  
   }
