@@ -92,7 +92,7 @@ export default  function Todo() {
         
       </div>
       <div className="  mt-5 ">
-        <h1 className="text-center text-gray-400 mb-3 text-lg">To Do</h1>
+        <h1 className="text-center text-gray-400 mb-3 text-lg">To Do List</h1>
          <div className=" flex flex-col justify-center items-center space-y-3"  >
          {
             list.map((item)=>(
