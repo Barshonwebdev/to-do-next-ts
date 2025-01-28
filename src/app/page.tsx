@@ -27,6 +27,9 @@ export default  function Todo() {
       method:"PUT",
       body:JSON.stringify(userInput),
     })
+    const res= await fetch('http://localhost:3000/api');
+    const data= await res.json();
+    setList(data);
   }
 
   async function addTask(list,item){
@@ -68,8 +71,9 @@ export default  function Todo() {
        method:"DELETE", 
      }
 );
-      const updatedList = list.filter((item) => item._id !== id);
-      setList(updatedList); 
+    const res= await fetch('http://localhost:3000/api');
+    const data= await res.json();
+    setList(data);
   };
 
   const startEdit = (item) => {
