@@ -28,6 +28,15 @@ export default  function Todo() {
       body:JSON.stringify(userInput),
     })
   }
+
+  async function addTask(list,item){
+    await fetch('/api',{
+      method:"POST",
+      body:JSON.stringify(item)
+    })
+    setList([...list, item]);
+
+  }
   //add task or edit task
   const handleAddorEdit=(id)=>{
     if (userInput.trim() === '') return;
@@ -46,12 +55,8 @@ export default  function Todo() {
          
           value: userInput,
       };
-      fetch('/api',{
-        method:"POST",
-        body:JSON.stringify(newItem)
-      })
+      addTask(list,newItem);
       
-      setList([...list, newItem]);
   } 
   
     setUserInput(' ');
@@ -81,12 +86,12 @@ export default  function Todo() {
         
       </div>
       <div className="  mt-5 ">
-         <div className=" flex flex-col justify-center items-center" >
+         <div className=" flex flex-col justify-center items-center"  >
          {
-            list.map((item)=>(
-            <div className=" flex flex-col " key={item._id}>
+            list.map((item,index)=>(
+            <div className=" flex flex-col " key={index}>
               <div className="text-center">
-              <span className=" text-green-500 font-bold text-2xl">{item.value}</span>
+            <span className=" text-green-500 font-bold text-2xl">{item.value}</span>
               </div>
               <div className="space-x-2 flex justify-center items-center">
               <span><button  onClick={() => deleteTask(item._id)} className="p-1 text-white bg-red-500 rounded">Delete</button></span>
