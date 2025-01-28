@@ -86,8 +86,8 @@ export default  function Todo() {
   return (
     <div className="bg-gray-100 flex flex-col justify-center py-8 w-1/2 mx-auto" >
       <h1 className= " text-center text-5xl mt-5">To Do App</h1>
-      <div className="  flex mx-auto space-y-3 justify-center mt-8 space-x-2 ">
-        <input  onChange={(e)=> updateInput(e.target.value)} value={userInput} className="sm:mx-auto md:mx-0  border-gray border-2 px-4" type="text" />
+      <div className="  flex flex-col md:flex-row mx-auto space-y-3 justify-center w-1/2 mt-8 space-x-2 ">
+        <input placeholder="Add what you wanna do..." onChange={(e)=> updateInput(e.target.value)} value={userInput} className="sm:mx-auto md:mx-0  border-gray border-2 px-4" type="text" />
         <button onClick={()=>handleAddorEdit(editItem?._id)} className="bg-blue-500 rounded-lg text-white px-4 py-1 hover:bg-green-500">{editItem !== null ? 'Update task' : 'Add task'}</button>
         
       </div>
@@ -102,7 +102,7 @@ export default  function Todo() {
               </div>
               <div className="space-x-2 flex justify-center items-center">
               <span className=" "><button  onClick={() => deleteTask(item._id)} className="flex items-center p-1 text-white bg-red-500 rounded "><RxCross2></RxCross2>Delete</button></span>
-              <span><button  onClick={() => startEdit(item)} className="flex items-center p-1 text-white bg-orange-500 rounded"><CiEdit></CiEdit>Edit</button></span>
+              <span><button  onClick={() => startEdit(item)} className="flex items-center py-1 px-2 text-white bg-orange-500 rounded"><CiEdit></CiEdit>Edit</button></span>
               </div>
             </div>
             ))
