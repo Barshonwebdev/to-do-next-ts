@@ -6,7 +6,8 @@ import React, { useEffect, useState } from "react";
 export default  function Todo() {
   const [userInput,setUserInput]=useState('');
   const [list,setList]=useState([]);
-  const [editIndex,setEditIndex]=useState(null);
+  // const [editIndex,setEditIndex]=useState(null);  
+  const [editItem,setEditItem]=useState(null);
   
   useEffect(()=>{
     async function fetchTasks() {
@@ -25,13 +26,13 @@ export default  function Todo() {
   //add task or edit task
   const handleAddorEdit=()=>{
     if (userInput.trim() === '') return;
-    if (editIndex !== null) {
+    if (editItem !== null) {
       // Edit existing item
-      const updatedList = list.map((item, index) =>
-          index === editIndex ? { ...item, value: userInput } : item
+      const updatedList = list.map((item) =>
+          item._id === editItem._id ? { ...item, value: userInput } : item
       );
       setList(updatedList);
-      setEditIndex(null); // Reset edit mode 
+      setEditItem(editItem); // Reset edit mode 
       async function editTask(id){
         await fetch(`/api/${id}`,{
           method:"PUT",
@@ -66,9 +67,9 @@ export default  function Todo() {
       setList(updatedList); 
   };
 
-  const startEdit = (index) => {
-    setUserInput(list[index].value);
-    setEditIndex(index); // Set the index of the item to be edited
+  const startEdit = (item) => {
+    setUserInput(item.value);
+    setEditItem(item); 
 };
   
   return (
@@ -76,20 +77,20 @@ export default  function Todo() {
       <h1 className= " text-center text-5xl mt-5">To Do App</h1>
       <div className="  flex flex-col md:flex-row space-y-3 justify-center mt-8 space-x-2">
         <input  onChange={(e)=> updateInput(e.target.value)} value={userInput} className="sm:mx-auto md:mx-0  border-gray border-2" type="text" />
-        <button onClick={handleAddorEdit} className="bg-blue-500 text-white px-2 py-1 hover:bg-green-500">{editIndex !== null ? 'Update task' : 'Add task'}</button>
+        <button onClick={handleAddorEdit} className="bg-blue-500 text-white px-2 py-1 hover:bg-green-500">{editItem !== null ? 'Update task' : 'Add task'}</button>
         
       </div>
       <div className="  mt-5 ">
          <div className=" flex flex-col justify-center items-center" >
          {
-            list.map((item,index)=>(
+            list.map((item)=>(
             <div className=" flex flex-col " key={item._id}>
               <div className="text-center">
               <span className=" text-green-500 font-bold text-2xl">{item.value}</span>
               </div>
               <div className="space-x-2 flex justify-center items-center">
               <span><button  onClick={() => deleteTask(item._id)} className="p-1 text-white bg-red-500 rounded">Delete</button></span>
-              <span><button  onClick={() => startEdit(index)} className="p-1 text-white bg-orange-500 rounded">Edit</button></span>
+              <span><button  onClick={() => startEdit(item)} className="p-1 text-white bg-orange-500 rounded">Edit</button></span>
               </div>
             </div>
             ))
