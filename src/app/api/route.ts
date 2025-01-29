@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
@@ -25,13 +26,14 @@ async function run() {
 }
 export async function GET(request: Request) {
   const data =  await run();
-  return Response.json(data)
+  return NextResponse.json(data)
 }
 
+// post api 
 export async function POST(request: Request){
   await client.connect();
   const body= await request.json()
   const result = await client.db("todo").collection("tasks").insertOne({value:body.value});
-  return Response.json({message: "successfully updated the document"})
+  return NextResponse.json({message: "successfully updated the document"})
 }
 
