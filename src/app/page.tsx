@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { CiEdit } from "react-icons/ci";
+import { readTasks } from "./api/route";
+import { json } from "stream/consumers";
 
 type Item = {
   _id: string;
@@ -18,8 +20,10 @@ export default function Todo() {
 
   useEffect(() => {
     async function fetchTasks() {
-      const res = await fetch("http://localhost:3000/api");
-      const data = await res.json();
+      // const res = await fetch("http://localhost:3000/api");
+      // const data = await res.json();
+      const data= await readTasks();
+      console.log(data);
       setList(data);
     }
     fetchTasks();

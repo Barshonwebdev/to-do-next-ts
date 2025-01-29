@@ -1,3 +1,5 @@
+'use server' ;
+
 import { NextResponse } from "next/server";
 
 
@@ -24,9 +26,16 @@ async function run() {
     await client.close();
   }
 }
-export async function GET(request: Request) {
-  const data =  await run();
-  return NextResponse.json(data)
+// export async function GET(request: Request) {
+//   const data =  await run();
+//   return NextResponse.json(data)
+// }
+
+// Read server action 
+export async function readTasks(){
+  const data= await run();
+  const parsedData=JSON.parse(JSON.stringify(data));
+  return parsedData;
 }
 
 // post api 
