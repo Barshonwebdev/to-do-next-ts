@@ -20,8 +20,11 @@ export default function Todo() {
 
   useEffect(() => {
     async function fetchTasks() {
+      // api
       // const res = await fetch("http://localhost:3000/api");
       // const data = await res.json();
+
+      // server action
       const data = await readTasks();
       setList(data);
     }
@@ -33,38 +36,45 @@ export default function Todo() {
     setUserInput(value);
   };
 
-
   // edit task function
-  async function editTask(editItem:Item,userInput:string) {
+  async function editTask(editItem: Item, userInput: string) {
+    // api
     // await fetch(`/api/${id}`, {
     //   method: "PUT",
     //   body: JSON.stringify(userInput),
     // });
 
-    console.log(userInput);
-    await putTask(editItem,userInput);
+    // server action
+    await putTask(editItem, userInput);
+
+    // api
 
     // const res = await fetch("http://localhost:3000/api");
     // const data = await res.json();
     // setList(data);
+
+    // server action
     const data = await readTasks();
     setList(data);
   }
 
-  
-
   // add task function
   async function addTask(item: TCreateItem) {
-
-    await postTask(item);
+    // api
     // await fetch("/api", {
     //   method: "POST",
     //   body: JSON.stringify(item),
     // });
+
+    // server action
+    await postTask(item);
+
+    // api
     // const res = await fetch("http://localhost:3000/api");
     // const data = await res.json();
     // setList(data);
 
+    // server action
     const data = await readTasks();
     setList(data);
   }
@@ -74,7 +84,7 @@ export default function Todo() {
     if (userInput.trim() === "") return;
     if (editItem !== null) {
       // Edit existing item
-      editTask(editItem,userInput);
+      editTask(editItem, userInput);
     } else {
       // Add new item
       const newItem = {

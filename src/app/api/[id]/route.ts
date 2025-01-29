@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -35,8 +35,8 @@ const client = new MongoClient(uri, {
 //     .db("todo")
 //     .collection("tasks")
 //     .findOne({ _id: new ObjectId(id) });
-//   return NextResponse.json(result); 
-  
+//   return NextResponse.json(result);
+
 // }
 
 // // DELETE API
@@ -54,13 +54,15 @@ const client = new MongoClient(uri, {
 //   return result;
 // }
 
-// DELETE server action 
-export async function deleteTask(id:string){
-  if(!id) return null;
+// DELETE server action
+export async function deleteTask(id: string) {
+  if (!id) return null;
   await client.connect();
-  const result=await client.db("todo").collection('tasks').deleteOne({_id:new ObjectId(id)});
+  const result = await client
+    .db("todo")
+    .collection("tasks")
+    .deleteOne({ _id: new ObjectId(id) });
   return result;
-
 }
 
 // // PUT API
@@ -80,12 +82,15 @@ export async function deleteTask(id:string){
 //   return NextResponse.json({ message: "successfully updated the document" });
 // }
 
-// PUT server action 
-export async function putTask(item:Item,editText:string){
-   if(!item._id) return null;
-   await client.connect();
-   console.log(item);
-  const result= await client.db("todo").collection("tasks").updateOne({_id:new ObjectId(item._id)}, {$set:{value:editText}});
+// PUT server action
+export async function putTask(item: Item, editText: string) {
+  if (!item._id) return null;
+  await client.connect();
+  console.log(item);
+  const result = await client
+    .db("todo")
+    .collection("tasks")
+    .updateOne({ _id: new ObjectId(item._id) }, { $set: { value: editText } });
   console.log(result);
   return result;
 }
