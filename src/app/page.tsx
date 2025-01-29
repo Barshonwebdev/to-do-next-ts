@@ -5,6 +5,7 @@ import { RxCross2 } from "react-icons/rx";
 import { CiEdit } from "react-icons/ci";
 import { readTasks } from "./api/route";
 import { json } from "stream/consumers";
+import { deleteTask } from "./api/[id]/route";
 
 type Item = {
   _id: string;
@@ -78,10 +79,8 @@ export default function Todo() {
   };
 
   // Delete task function
-  async function deleteTask(id: string) {
-    await fetch(`/api/${id}`, {
-      method: "DELETE",
-    });
+  async function deleteTaskfunc(id: string) {
+   await deleteTask(id);
     // const res = await fetch("http://localhost:3000/api");
     // const data = await res.json();
     // setList(data);
@@ -126,7 +125,7 @@ export default function Todo() {
               <div className="flex items-center justify-center space-x-2">
                 <span className=" ">
                   <button
-                    onClick={() => deleteTask(item._id)}
+                    onClick={() => deleteTaskfunc(item._id)}
                     className="flex items-center rounded bg-red-500 p-1 text-white"
                   >
                     <RxCross2></RxCross2> Delete

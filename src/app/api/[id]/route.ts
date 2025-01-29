@@ -1,3 +1,5 @@
+'use server'
+
 import { NextRequest, NextResponse } from "next/server";
 
 // Mongodb
@@ -15,35 +17,45 @@ const client = new MongoClient(uri, {
 
 // APIs
 
-// GET API
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const id = (await params).id;
-  console.log(id);
-  if (!id) return null;
-  await client.connect();
-  const result = await client
-    .db("todo")
-    .collection("tasks")
-    .findOne({ _id: new ObjectId(id) });
-  return NextResponse.json(result);
-}
+// // GET API
+// export async function GET(
+//   request: NextRequest,
+//   { params }: { params: Promise<{ id: string }> },
+// ) {
+//   const id = (await params).id;
+//   console.log(id);
+//   if (!id) return null;
+//   await client.connect();
+//   const result = await client
+//     .db("todo")
+//     .collection("tasks")
+//     .findOne({ _id: new ObjectId(id) });
+//   return NextResponse.json(result); 
+  
+// }
 
-// DELETE API
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const id = (await params).id;
-  if (!id) return null;
+// // DELETE API
+// export async function DELETE(
+//   request: NextRequest,
+//   { params }: { params: Promise<{ id: string }> },
+// ) {
+//   const id = (await params).id;
+//   if (!id) return null;
+//   await client.connect();
+//   const result = await client
+//     .db("todo")
+//     .collection("tasks")
+//     .deleteOne({ _id: new ObjectId(id) });
+//   return result;
+// }
+
+// DELETE server action 
+export async function deleteTask(id:string){
+  if(!id) return null;
   await client.connect();
-  const result = await client
-    .db("todo")
-    .collection("tasks")
-    .deleteOne({ _id: new ObjectId(id) });
+  const result=await client.db("todo").collection('tasks').deleteOne({_id:new ObjectId(id)});
   return result;
+
 }
 
 // PUT API
