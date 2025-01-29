@@ -45,7 +45,7 @@ export default function Todo() {
   // add task function
   async function addTask(item: TCreateItem) {
     await fetch("/api", {
-      method: "POST",
+      method: "POST", 
       body: JSON.stringify(item),
     });
     const res = await fetch("http://localhost:3000/api");
