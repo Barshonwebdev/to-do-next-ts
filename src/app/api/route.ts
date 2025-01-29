@@ -2,6 +2,7 @@
 
 import { NextResponse } from "next/server";
 
+type CreateItem = { value: string };
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://barshonweb:eYgyPnRe5YOXhQC3@cluster0.xm1pp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
@@ -40,11 +41,19 @@ export async function readTasks(){
   return parsedData;
 }
 
-// post api 
-export async function POST(request: Request){
+// // post api 
+// export async function POST(request: Request){
+//   await client.connect();
+//   const body= await request.json()
+//   const result = await client.db("todo").collection("tasks").insertOne({value:body.value});
+//   return NextResponse.json({message: "successfully updated the document"})
+// } 
+
+// post server action 
+export async function postTask(item:CreateItem){
   await client.connect();
-  const body= await request.json()
-  const result = await client.db("todo").collection("tasks").insertOne({value:body.value});
-  return NextResponse.json({message: "successfully updated the document"})
+  const result= await client.db('todo').collection('tasks').insertOne({value:item.value});
+  const parsedResult=JSON.parse(JSON.stringify(result));
+  return parsedResult;
 }
 

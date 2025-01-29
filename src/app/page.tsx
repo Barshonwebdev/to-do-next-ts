@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { CiEdit } from "react-icons/ci";
-import { readTasks } from "./api/route";
+import { postTask, readTasks } from "./api/route";
 import { deleteTask, putTask } from "./api/[id]/route";
 
 type Item = {
@@ -55,10 +55,12 @@ export default function Todo() {
 
   // add task function
   async function addTask(item: TCreateItem) {
-    await fetch("/api", {
-      method: "POST",
-      body: JSON.stringify(item),
-    });
+
+    await postTask(item);
+    // await fetch("/api", {
+    //   method: "POST",
+    //   body: JSON.stringify(item),
+    // });
     // const res = await fetch("http://localhost:3000/api");
     // const data = await res.json();
     // setList(data);
