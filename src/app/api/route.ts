@@ -26,6 +26,8 @@ async function run() {
     await client.close();
   }
 }
+
+// GET api 
 // export async function GET(request: Request) {
 //   const data =  await run();
 //   return NextResponse.json(data)

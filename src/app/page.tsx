@@ -23,7 +23,6 @@ export default function Todo() {
       // const res = await fetch("http://localhost:3000/api");
       // const data = await res.json();
       const data= await readTasks();
-      console.log(data);
       setList(data);
     }
     fetchTasks();
@@ -78,8 +77,10 @@ export default function Todo() {
     await fetch(`/api/${id}`, {
       method: "DELETE",
     });
-    const res = await fetch("http://localhost:3000/api");
-    const data = await res.json();
+    // const res = await fetch("http://localhost:3000/api");
+    // const data = await res.json();
+    // setList(data);
+    const data= await readTasks();
     setList(data);
   }
 
