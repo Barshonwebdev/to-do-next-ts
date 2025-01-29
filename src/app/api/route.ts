@@ -1,12 +1,23 @@
 "use server";
-
-import { NextResponse } from "next/server";
+import mongoose from 'mongoose'
 
 type CreateItem = { value: string };
 
+
+// mongoose + mongodb
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri =
   "mongodb+srv://barshonweb:eYgyPnRe5YOXhQC3@cluster0.xm1pp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+  // mongoose.connect(uri);
+
+  // const {Schema,model}=mongoose;
+  // const taskSchema= new Schema ({
+  //   _id: String,
+  //   value: String,
+  // })
+
+  // const Task=model('Task', taskSchema);
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -21,7 +32,9 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const cursor = await client.db("todo").collection("tasks").find();
-    const array = await cursor.toArray();
+    const array = await cursor.toArray(); 
+    // const tasks=await Task.find();
+    // return tasks;
     return array;
   } finally {
     // Ensures that the client will close when you finish/error
