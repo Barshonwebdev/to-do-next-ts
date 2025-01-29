@@ -40,8 +40,10 @@ export default function Todo() {
       body: JSON.stringify(userInput),
     });
 
-    const res = await fetch("http://localhost:3000/api");
-    const data = await res.json();
+    // const res = await fetch("http://localhost:3000/api");
+    // const data = await res.json();
+    // setList(data);
+    const data= await readTasks();
     setList(data);
   }
 
