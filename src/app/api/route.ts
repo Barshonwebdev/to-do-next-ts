@@ -29,26 +29,12 @@ async function run() {
   }
 }
 
-// GET api
-// export async function GET(request: Request) {
-//   const data =  await run();
-//   return NextResponse.json(data)
-// }
-
 // Read server action
 export async function readTasks() {
   const data = await run();
   const parsedData = JSON.parse(JSON.stringify(data));
   return parsedData;
 }
-
-// // post api
-// export async function POST(request: Request){
-//   await client.connect();
-//   const body= await request.json()
-//   const result = await client.db("todo").collection("tasks").insertOne({value:body.value});
-//   return NextResponse.json({message: "successfully updated the document"})
-// }
 
 // post server action
 export async function postTask(item: CreateItem) {

@@ -1,7 +1,5 @@
 "use server";
 
-import { NextRequest, NextResponse } from "next/server";
-
 type Item = {
   _id: string;
   value: string;
@@ -20,40 +18,6 @@ const client = new MongoClient(uri, {
   },
 });
 
-// APIs
-
-// // GET API
-// export async function GET(
-//   request: NextRequest,
-//   { params }: { params: Promise<{ id: string }> },
-// ) {
-//   const id = (await params).id;
-//   console.log(id);
-//   if (!id) return null;
-//   await client.connect();
-//   const result = await client
-//     .db("todo")
-//     .collection("tasks")
-//     .findOne({ _id: new ObjectId(id) });
-//   return NextResponse.json(result);
-
-// }
-
-// // DELETE API
-// export async function DELETE(
-//   request: NextRequest,
-//   { params }: { params: Promise<{ id: string }> },
-// ) {
-//   const id = (await params).id;
-//   if (!id) return null;
-//   await client.connect();
-//   const result = await client
-//     .db("todo")
-//     .collection("tasks")
-//     .deleteOne({ _id: new ObjectId(id) });
-//   return result;
-// }
-
 // DELETE server action
 export async function deleteTask(id: string) {
   if (!id) return null;
@@ -64,23 +28,6 @@ export async function deleteTask(id: string) {
     .deleteOne({ _id: new ObjectId(id) });
   return result;
 }
-
-// // PUT API
-// export async function PUT(
-//   request: NextRequest,
-//   { params }: { params: Promise<{ id: string }> },
-// ) {
-//   const id = (await params).id;
-//   const body = await request.json();
-//   console.log(body);
-//   if (!id) return null;
-//   await client.connect();
-//   await client
-//     .db("todo")
-//     .collection("tasks")
-//     .updateOne({ _id: new ObjectId(id) }, { $set: { value: body } });
-//   return NextResponse.json({ message: "successfully updated the document" });
-// }
 
 // PUT server action
 export async function putTask(item: Item, editText: string) {
