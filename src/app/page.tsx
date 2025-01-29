@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { CiEdit } from "react-icons/ci";
 import { readTasks } from "./api/route";
-import { json } from "stream/consumers";
-import { deleteTask } from "./api/[id]/route";
+import { deleteTask, putTask } from "./api/[id]/route";
 
 type Item = {
   _id: string;
@@ -23,7 +22,7 @@ export default function Todo() {
     async function fetchTasks() {
       // const res = await fetch("http://localhost:3000/api");
       // const data = await res.json();
-      const data= await readTasks();
+      const data = await readTasks();
       setList(data);
     }
     fetchTasks();
@@ -34,31 +33,37 @@ export default function Todo() {
     setUserInput(value);
   };
 
+
   // edit task function
-  async function editTask(id: string) {
-    await fetch(`/api/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(userInput),
-    });
+  async function editTask(editItem:Item,userInput:string) {
+    // await fetch(`/api/${id}`, {
+    //   method: "PUT",
+    //   body: JSON.stringify(userInput),
+    // });
+
+    console.log(userInput);
+    await putTask(editItem,userInput);
 
     // const res = await fetch("http://localhost:3000/api");
     // const data = await res.json();
     // setList(data);
-    const data= await readTasks();
+    const data = await readTasks();
     setList(data);
   }
+
+  
 
   // add task function
   async function addTask(item: TCreateItem) {
     await fetch("/api", {
-      method: "POST", 
+      method: "POST",
       body: JSON.stringify(item),
     });
     // const res = await fetch("http://localhost:3000/api");
     // const data = await res.json();
     // setList(data);
 
-    const data= await readTasks();
+    const data = await readTasks();
     setList(data);
   }
 
@@ -67,7 +72,7 @@ export default function Todo() {
     if (userInput.trim() === "") return;
     if (editItem !== null) {
       // Edit existing item
-      editTask(editItem._id);
+      editTask(editItem,userInput);
     } else {
       // Add new item
       const newItem = {
@@ -80,11 +85,11 @@ export default function Todo() {
 
   // Delete task function
   async function deleteTaskfunc(id: string) {
-   await deleteTask(id);
+    await deleteTask(id);
     // const res = await fetch("http://localhost:3000/api");
     // const data = await res.json();
     // setList(data);
-    const data= await readTasks();
+    const data = await readTasks();
     setList(data);
   }
 
