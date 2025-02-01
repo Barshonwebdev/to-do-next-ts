@@ -3,7 +3,7 @@ import connectDatabase from "@/lib/mongoose";
 import TaskModel from "@/models/Task";
 // import mongoose from "mongoose";
 
-// type CreateItem = { value: string };
+ type CreateItem = { value: string };
 
 // // mongoose + mongodb
 // //const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
@@ -62,18 +62,22 @@ export async function readTasks(){
     await connectDatabase();
     const tasks = await TaskModel.find({});
      const parsedData = JSON.parse(JSON.stringify(tasks));
+     console.log(parsedData); 
      return parsedData;
-     console.log(parsedData);
   
 }
 
 // post server action
 export async function postTask(item: CreateItem) {
-  await client.connect();
-  const result = await client
-    .db("todo")
-    .collection("tasks")
-    .insertOne({ value: item.value });
-  const parsedResult = JSON.parse(JSON.stringify(result));
-  return parsedResult;
+  // await client.connect();
+  // const result = await client
+  //   .db("todo")
+  //   .collection("tasks")
+  //   .insertOne({ value: item.value });
+  // const parsedResult = JSON.parse(JSON.stringify(result));
+  // return parsedResult;
+
+  await connectDatabase();
+  const newTask= await TaskModel.create({value:item.value});
+  await newTask.save();
 }
