@@ -4,7 +4,7 @@ const taskSchema = new mongoose.Schema({
   value: String,
 });
 
+const TaskModel =
+  mongoose.models.TaskModel || mongoose.model("TaskModel", taskSchema);
 
-const TaskModel = mongoose.models.TaskModel || mongoose.model("TaskModel", taskSchema);
-
-export default TaskModel ;
+export default TaskModel;
