@@ -17,9 +17,7 @@ export async function readTasks() {
 export async function postTask(item: CreateItem) {
   await connectDatabase();
   const newTask = await TaskModel.create({ value: item.value });
-  const result=await newTask.save();
-  console.log(result);
-  if (result.value !== null) {
+  if (newTask.value !== null) {
     return { message: "task creation success" };
   } else {
     return { message: "task creation failed" };

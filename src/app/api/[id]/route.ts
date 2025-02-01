@@ -22,11 +22,11 @@ export async function deleteTask(id: string) {
 }
 
 // PUT server action
-export async function putTask(item: Item, editText: string) {
-  if (!item._id) return null;
+export async function putTask(id: string, editText: string) {
+  if (!id) return null;
   await connectDatabase();
   const result = await TaskModel.updateOne(
-    { _id: item._id },
+    { _id: id },
     { $set: { value: editText } },
   );
 

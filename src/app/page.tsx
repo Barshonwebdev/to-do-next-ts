@@ -36,15 +36,15 @@ export default function Todo() {
     setUserInput(value);
   };
 
-  // setting edit input 
-  const updateEditInput=(value:string)=>{
+  // setting edit input
+  const updateEditInput = (value: string) => {
     setEditInput(value);
-  }
+  };
 
   // edit task function
-  async function editTask(editItem: Item, editInput: string) {
+  async function editTask(id: string, editInput: string) {
     // server action
-    await putTask(editItem, editInput);
+    await putTask(id, editInput);
 
     // server action
     const data = await readTasks();
@@ -76,7 +76,7 @@ export default function Todo() {
     if (editInput.trim() === "") return;
     if (editItem !== null) {
       // Edit existing item
-      editTask(editItem, editInput);
+      editTask(editItem._id, editInput);
       setUserInput(" ");
     }
   };
@@ -101,11 +101,6 @@ export default function Todo() {
     setIsModalOpen(false);
     handleEdit();
   };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
 
   return (
     <div className="mx-auto flex w-1/2 flex-col justify-center bg-gray-100 py-8">
@@ -162,7 +157,7 @@ export default function Todo() {
             title="Edit Your Task"
             open={isModalOpen}
             onOk={handleOk}
-            onCancel={handleCancel}
+            onCancel={()=>setIsModalOpen(false)}
           >
             <input
               placeholder="edit your task"
