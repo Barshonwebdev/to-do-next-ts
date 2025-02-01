@@ -2,7 +2,6 @@
 
 import connectDatabase from "@/lib/mongoose";
 import TaskModel from "@/models/Task";
-import { revalidatePath } from "next/cache";
 
 // DELETE server action
 export async function deleteTask(id: string) {
