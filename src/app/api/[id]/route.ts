@@ -1,5 +1,8 @@
 "use server";
 
+import connectDatabase from "@/lib/mongoose";
+import TaskModel from "@/models/Task";
+
 type Item = {
   _id: string;
   value: string;
@@ -21,11 +24,8 @@ const client = new MongoClient(uri, {
 // DELETE server action
 export async function deleteTask(id: string) {
   if (!id) return null;
-  await client.connect();
-  const result = await client
-    .db("todo")
-    .collection("tasks")
-    .deleteOne({ _id: new ObjectId(id) });
+  await connectDatabase();
+  const result=await TaskModel.deleteOne({_id:id});
   return result;
 }
 
