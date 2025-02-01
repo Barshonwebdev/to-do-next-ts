@@ -10,7 +10,6 @@ export async function deleteTask(id: string) {
   await connectDatabase();
   const result = await TaskModel.deleteOne({ _id: id });
   console.log(result);
-  revalidatePath("/");
   if (result.deletedCount === 1) {
     return { message: " deletion successful" };
   } else {
