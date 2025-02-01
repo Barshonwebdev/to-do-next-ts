@@ -13,19 +13,28 @@ export async function deleteTask(id: string) {
   if (!id) return null;
   await connectDatabase();
   const result = await TaskModel.deleteOne({ _id: id });
-  return result;
+  console.log(result);
+  if (result.deletedCount === 1) {
+    return { message: " deletion successful" };
+  } else {
+    return { message: "task not deleted" };
+  }
 }
 
 // PUT server action
 export async function putTask(item: Item, editText: string) {
   if (!item._id) return null;
   await connectDatabase();
-  const result = await TaskModel.findOneAndUpdate(
+  const result = await TaskModel.updateOne(
     { _id: item._id },
     { $set: { value: editText } },
   );
 
   // validate if task actually exists
-
-  return { message: "success" };
+  console.log(result);
+  if (result.matchedCount === 1) {
+    return { message: "success" };
+  } else {
+    return { message: "task not found" };
+  }
 }

@@ -10,7 +10,6 @@ export async function readTasks() {
   await connectDatabase();
   const tasks = await TaskModel.find({});
   const parsedData = JSON.parse(JSON.stringify(tasks));
-  console.log(parsedData);
   return parsedData;
 }
 
@@ -18,5 +17,11 @@ export async function readTasks() {
 export async function postTask(item: CreateItem) {
   await connectDatabase();
   const newTask = await TaskModel.create({ value: item.value });
-  await newTask.save();
+  const result=await newTask.save();
+  console.log(result);
+  if (result.value !== null) {
+    return { message: "task creation success" };
+  } else {
+    return { message: "task creation failed" };
+  }
 }

@@ -17,7 +17,7 @@ type TCreateItem = { value: string };
 
 export default function Todo() {
   const [userInput, setUserInput] = useState("");
-  const [editInput,setEditInput]=useState("");
+  const [editInput, setEditInput] = useState("");
   const [list, setList] = useState<Item[]>([]);
   const [editItem, setEditItem] = useState<Item | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,13 +34,17 @@ export default function Todo() {
   //setting user input
   const updateInput = (value: string) => {
     setUserInput(value);
-    setEditInput(value);
   };
+
+  // setting edit input 
+  const updateEditInput=(value:string)=>{
+    setEditInput(value);
+  }
 
   // edit task function
   async function editTask(editItem: Item, editInput: string) {
     // server action
-    await putTask(editItem,editInput);
+    await putTask(editItem, editInput);
 
     // server action
     const data = await readTasks();
@@ -83,26 +87,25 @@ export default function Todo() {
     const data = await readTasks();
     setList(data);
   }
+  // Editing function
+  const startEdit = (item: Item) => {
+    showModal(item);
+  };
   const showModal = (item: Item) => {
     setIsModalOpen(true);
-    setUserInput(item.value);
+    setEditInput(item.value);
     setEditItem(item);
   };
 
   const handleOk = () => {
     setIsModalOpen(false);
     handleEdit();
-
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
-  // Editing function
-  const startEdit = (item: Item) => {
-    showModal(item);
-  };
 
   return (
     <div className="mx-auto flex w-1/2 flex-col justify-center bg-gray-100 py-8">
@@ -112,6 +115,8 @@ export default function Todo() {
           placeholder="Add what you wanna do..."
           className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
           type="text"
+          value={userInput}
+          onChange={(e) => updateInput(e.target.value)}
         />
         <button
           onClick={() => handleAdd()}
@@ -161,8 +166,8 @@ export default function Todo() {
           >
             <input
               placeholder="edit your task"
-              onChange={(e) => updateInput(e.target.value)}
-              value={userInput}
+              onChange={(e) => updateEditInput(e.target.value)}
+              value={editInput}
               className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
               type="text"
             />
