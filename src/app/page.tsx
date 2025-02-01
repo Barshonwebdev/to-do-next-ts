@@ -157,7 +157,7 @@ export default function Todo() {
             title="Edit Your Task"
             open={isModalOpen}
             onOk={handleOk}
-            onCancel={()=>setIsModalOpen(false)}
+            onCancel={() => setIsModalOpen(false)}
           >
             <input
               placeholder="edit your task"

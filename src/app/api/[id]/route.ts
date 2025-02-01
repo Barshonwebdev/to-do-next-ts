@@ -2,6 +2,7 @@
 
 import connectDatabase from "@/lib/mongoose";
 import TaskModel from "@/models/Task";
+import { revalidatePath } from "next/cache";
 
 type Item = {
   _id: string;
@@ -14,6 +15,7 @@ export async function deleteTask(id: string) {
   await connectDatabase();
   const result = await TaskModel.deleteOne({ _id: id });
   console.log(result);
+  revalidatePath('/');
   if (result.deletedCount === 1) {
     return { message: " deletion successful" };
   } else {
