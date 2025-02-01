@@ -73,6 +73,7 @@ export default function Todo() {
 
   //Edit handling function
   const handleEdit = () => {
+    setIsModalOpen(false);
     if (editInput.trim() === "") return;
     if (editItem !== null) {
       // Edit existing item
@@ -87,21 +88,16 @@ export default function Todo() {
     const data = await readTasks();
     setList(data);
   }
-  // Editing function
-  const startEdit = (item: Item) => {
-    showModal(item);
-  };
+
+  // Modal function
+  
   const showModal = (item: Item) => {
     setIsModalOpen(true);
     setEditInput(item.value);
     setEditItem(item);
   };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
-    handleEdit();
-  };
-
+  
   return (
     <div className="mx-auto flex w-1/2 flex-col justify-center bg-gray-100 py-8">
       <h1 className="mt-5 text-center text-5xl">To Do App</h1>
@@ -141,7 +137,7 @@ export default function Todo() {
                 </span>
                 <span>
                   <button
-                    onClick={() => startEdit(item)}
+                    onClick={() => showModal(item)}
                     className="flex items-center rounded bg-orange-500 px-2 py-1 text-white"
                   >
                     <CiEdit></CiEdit>Edit
@@ -156,7 +152,7 @@ export default function Todo() {
           <Modal
             title="Edit Your Task"
             open={isModalOpen}
-            onOk={handleOk}
+            onOk={handleEdit}
             onCancel={() => setIsModalOpen(false)}
           >
             <input
