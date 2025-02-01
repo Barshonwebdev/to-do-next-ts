@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import "@ant-design/v5-patch-for-react-19";
 import { RxCross2 } from "react-icons/rx";
 import { CiEdit } from "react-icons/ci";
 import { postTask, readTasks } from "./api/route";
 import { deleteTask, putTask } from "./api/[id]/route";
+import { Modal } from "antd";
 
 type Item = {
   _id: string;
@@ -15,8 +17,10 @@ type TCreateItem = { value: string };
 
 export default function Todo() {
   const [userInput, setUserInput] = useState("");
+  const [editInput,setEditInput]=useState("");
   const [list, setList] = useState<Item[]>([]);
   const [editItem, setEditItem] = useState<Item | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchTasks() {
@@ -30,12 +34,13 @@ export default function Todo() {
   //setting user input
   const updateInput = (value: string) => {
     setUserInput(value);
+    setEditInput(value);
   };
 
   // edit task function
-  async function editTask(editItem: Item, userInput: string) {
+  async function editTask(editItem: Item, editInput: string) {
     // server action
-    await putTask(editItem, userInput);
+    await putTask(editItem,editInput);
 
     // server action
     const data = await readTasks();
@@ -52,22 +57,25 @@ export default function Todo() {
     setList(data);
   }
 
-  //Add or Edit handling function
-  const handleAddorEdit = () => {
+  //Add handling function
+  const handleAdd = () => {
     if (userInput.trim() === "") return;
-    if (editItem !== null) {
-      // Edit existing item
-      editTask(editItem, userInput);
-    } else {
-      // Add new item
-      const newItem = {
-        value: userInput,
-      };
-      addTask(newItem);
-    }
+    const newItem = {
+      value: userInput,
+    };
+    addTask(newItem);
     setUserInput(" ");
   };
 
+  //Edit handling function
+  const handleEdit = () => {
+    if (editInput.trim() === "") return;
+    if (editItem !== null) {
+      // Edit existing item
+      editTask(editItem, editInput);
+      setUserInput(" ");
+    }
+  };
   // Delete task function
   async function deleteTaskfunc(id: string) {
     await deleteTask(id);
@@ -75,11 +83,25 @@ export default function Todo() {
     const data = await readTasks();
     setList(data);
   }
+  const showModal = (item: Item) => {
+    setIsModalOpen(true);
+    setUserInput(item.value);
+    setEditItem(item);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+    handleEdit();
+
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   // Editing function
   const startEdit = (item: Item) => {
-    setUserInput(item.value);
-    setEditItem(item);
+    showModal(item);
   };
 
   return (
@@ -88,16 +110,14 @@ export default function Todo() {
       <div className="mx-auto mt-8 flex w-1/2 flex-col justify-center space-x-2 space-y-3 md:flex-row">
         <input
           placeholder="Add what you wanna do..."
-          onChange={(e) => updateInput(e.target.value)}
-          value={userInput}
           className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
           type="text"
         />
         <button
-          onClick={() => handleAddorEdit()}
+          onClick={() => handleAdd()}
           className="rounded-lg bg-blue-500 px-4 py-1 text-white hover:bg-green-500"
         >
-          {editItem !== null ? "Update task" : "Add task"}
+          Add Task
         </button>
       </div>
       <div className="mt-5">
@@ -131,6 +151,23 @@ export default function Todo() {
             </div>
           ))}
         </div>
+        {/* modal  */}
+        <>
+          <Modal
+            title="Edit Your Task"
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+          >
+            <input
+              placeholder="edit your task"
+              onChange={(e) => updateInput(e.target.value)}
+              value={userInput}
+              className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
+              type="text"
+            />
+          </Modal>
+        </>
       </div>
     </div>
   );

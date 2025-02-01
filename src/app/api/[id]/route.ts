@@ -20,9 +20,12 @@ export async function deleteTask(id: string) {
 export async function putTask(item: Item, editText: string) {
   if (!item._id) return null;
   await connectDatabase();
-  const result = await TaskModel.updateOne(
+  const result = await TaskModel.findOneAndUpdate(
     { _id: item._id },
     { $set: { value: editText } },
   );
-  return result;
+
+  // validate if task actually exists
+
+  return { message: "success" };
 }
