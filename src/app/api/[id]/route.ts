@@ -1,43 +1,37 @@
 "use server";
 
-type Item = {
-  _id: string;
-  value: string;
-};
-
-// Mongodb
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const uri =
-  "mongodb+srv://barshonweb:eYgyPnRe5YOXhQC3@cluster0.xm1pp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+import connectDatabase from "@/lib/mongoose";
+import TaskModel from "@/models/Task";
+import { revalidatePath } from "next/cache";
 
 // DELETE server action
 export async function deleteTask(id: string) {
   if (!id) return null;
-  await client.connect();
-  const result = await client
-    .db("todo")
-    .collection("tasks")
-    .deleteOne({ _id: new ObjectId(id) });
-  return result;
+  await connectDatabase();
+  const result = await TaskModel.deleteOne({ _id: id });
+  revalidatePath('/');
+  console.log(result);
+  if (result.deletedCount === 1) {
+    return { message: " deletion successful" };
+  } else {
+    return { message: "task not deleted" };
+  }
 }
 
 // PUT server action
-export async function putTask(item: Item, editText: string) {
-  if (!item._id) return null;
-  await client.connect();
-  console.log(item);
-  const result = await client
-    .db("todo")
-    .collection("tasks")
-    .updateOne({ _id: new ObjectId(item._id) }, { $set: { value: editText } });
+export async function putTask(id: string, editText: string) {
+  if (!id) return null;
+  await connectDatabase();
+  const result = await TaskModel.updateOne(
+    { _id: id },
+    { $set: { value: editText } },
+  );
+
+  // validate if task actually exists
   console.log(result);
-  return result;
+  if (result.matchedCount === 1) {
+    return { message: "success" };
+  } else {
+    return { message: "task not found" };
+  }
 }
