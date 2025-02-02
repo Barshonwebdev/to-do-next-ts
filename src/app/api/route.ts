@@ -13,6 +13,22 @@ export async function readTasks() {
   return parsedData;
 }
 
+// read aggregated data
+export async function aggregatePipelinefunc() {
+  await connectDatabase();
+  const aggData = await TaskModel.aggregate([
+    { $match: { value: "work" } },
+    { $count: "Works" },
+  ]);
+
+  const returnData = aggData[0]?.Works;
+  if (returnData === undefined) {
+    return 0;
+  } else {
+    return returnData;
+  }
+}
+
 // post server action
 export async function postTask(item: CreateItem) {
   await connectDatabase();

@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import "@ant-design/v5-patch-for-react-19";
 import { RxCross2 } from "react-icons/rx";
 import { CiEdit } from "react-icons/ci";
-import { postTask, readTasks } from "./api/route";
+import { aggregatePipelinefunc, postTask, readTasks } from "./api/route";
 import { deleteTask, putTask } from "./api/[id]/route";
+
 import { Modal } from "antd";
 
 type Item = {
@@ -15,11 +16,14 @@ type Item = {
 
 type TCreateItem = { value: string };
 
+
+
 export default function Todo() {
   const [userInput, setUserInput] = useState("");
   const [editInput, setEditInput] = useState("");
   const [list, setList] = useState<Item[]>([]);
   const [editItem, setEditItem] = useState<Item | null>(null);
+  const [aggData,setAggData]=useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -68,7 +72,7 @@ export default function Todo() {
       value: userInput,
     };
     addTask(newItem);
-    setUserInput(" ");
+    setUserInput("");
   };
 
   //Edit handling function
@@ -78,7 +82,7 @@ export default function Todo() {
     if (editItem !== null) {
       // Edit existing item
       editTask(editItem._id, editInput);
-      setUserInput(" ");
+      setUserInput("");
     }
   };
   // Delete task function
@@ -97,7 +101,13 @@ export default function Todo() {
     setEditItem(item);
   };
 
-  
+  // aggregate button handler 
+
+  async function aggregateTask(){
+   const data= await aggregatePipelinefunc();
+   console.log(data);
+   setAggData(data)
+  }
   return (
     <div className="mx-auto flex w-1/2 flex-col justify-center bg-gray-100 py-8">
       <h1 className="mt-5 text-center text-5xl">To Do App</h1>
@@ -115,6 +125,15 @@ export default function Todo() {
         >
           Add Task
         </button>
+      </div>
+      <div className="flex flex-col">
+      <button
+          onClick={aggregateTask}
+          className=" mx-auto my-4 rounded-lg bg-orange-500 px-4 py-1 text-white hover:bg-green-500"
+        >
+          Aggregate Start
+        </button>
+        <p className="text-center">Works : {aggData}</p>
       </div>
       <div className="mt-5">
         <h1 className="mb-3 text-center text-lg text-gray-500">To Do List</h1>
