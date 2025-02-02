@@ -1,13 +1,12 @@
 "use server";
 
-import connectDatabase from "@/lib/mongoose";
+import connectDB from "@/app/cache/cacheDb";
 import TaskModel from "@/models/Task";
-import { revalidatePath } from "next/cache";
 
 // DELETE server action
 export async function deleteTask(id: string) {
   if (!id) return null;
-  await connectDatabase();
+  await connectDB();
   const result = await TaskModel.deleteOne({ _id: id });
   console.log(result);
   if (result.deletedCount === 1) {
@@ -20,7 +19,7 @@ export async function deleteTask(id: string) {
 // PUT server action
 export async function putTask(id: string, editText: string) {
   if (!id) return null;
-  await connectDatabase();
+  await connectDB();
   const result = await TaskModel.updateOne(
     { _id: id },
     { $set: { value: editText } },
