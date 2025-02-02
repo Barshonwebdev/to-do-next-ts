@@ -1,65 +1,37 @@
-import { NextRequest, NextResponse } from "next/server";
+"use server";
 
-// Mongodb
-const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const uri =
-  "mongodb+srv://barshonweb:eYgyPnRe5YOXhQC3@cluster0.xm1pp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
+import connectDatabase from "@/lib/mongoose";
+import TaskModel from "@/models/Task";
+import { revalidatePath } from "next/cache";
 
-    strict: true,
-    deprecationErrors: true,
-  },
-});
-
-// APIs
-
-// GET API
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const id = (await params).id;
-  console.log(id);
+// DELETE server action
+export async function deleteTask(id: string) {
   if (!id) return null;
-  await client.connect();
-  const result = await client
-    .db("todo")
-    .collection("tasks")
-    .findOne({ _id: new ObjectId(id) });
-  return NextResponse.json(result);
+  await connectDatabase();
+  const result = await TaskModel.deleteOne({ _id: id });
+  revalidatePath('/');
+  console.log(result);
+  if (result.deletedCount === 1) {
+    return { message: " deletion successful" };
+  } else {
+    return { message: "task not deleted" };
+  }
 }
 
-// DELETE API
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const id = (await params).id;
+// PUT server action
+export async function putTask(id: string, editText: string) {
   if (!id) return null;
-  await client.connect();
-  const result = await client
-    .db("todo")
-    .collection("tasks")
-    .deleteOne({ _id: new ObjectId(id) });
-  return result;
-}
+  await connectDatabase();
+  const result = await TaskModel.updateOne(
+    { _id: id },
+    { $set: { value: editText } },
+  );
 
-// PUT API
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const id = (await params).id;
-  const body = await request.json();
-  console.log(body);
-  if (!id) return null;
-  await client.connect();
-  await client
-    .db("todo")
-    .collection("tasks")
-    .updateOne({ _id: new ObjectId(id) }, { $set: { value: body } });
-  return NextResponse.json({ message: "successfully updated the document" });
+  // validate if task actually exists
+  console.log(result);
+  if (result.matchedCount === 1) {
+    return { message: "success" };
+  } else {
+    return { message: "task not found" };
+  }
 }
