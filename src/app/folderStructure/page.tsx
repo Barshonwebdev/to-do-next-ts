@@ -6,13 +6,13 @@ import "@ant-design/v5-patch-for-react-19";
 import { deleteFolder, postFolder, readFolders } from "./action";
 
 type Folder = {
-  _id: string,
-  name: string,
-  parentId:string,
+  _id: string;
+  name: string;
+  parentId: string;
 };
 type TCreateFolder = {
-  name: string,
-  parentId:string,
+  name: string;
+  parentId: string;
 };
 
 export default function folderStructure() {
@@ -20,7 +20,7 @@ export default function folderStructure() {
   const [clicked, setClicked] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [parentId,setParentId]=useState('');
+  const [parentId, setParentId] = useState("");
 
   useEffect(() => {
     async function fetchFolders() {
@@ -35,15 +35,16 @@ export default function folderStructure() {
     // server action
     await postFolder(folder);
     setFolderName("");
+    setParentId("");
     // server action
-    const data = await readFolders(); 
+    const data = await readFolders();
     setChildren(data);
   }
   const handleAddFolder = () => {
     if (folderName.trim() === "") return;
     const newFolder = {
       name: folderName,
-      parentId:""
+      parentId: parentId,
     };
     addFolder(newFolder);
     setIsModalOpen(false);
@@ -116,14 +117,14 @@ export default function folderStructure() {
           <input
             placeholder="Folder Name"
             onChange={(e) => setFolderName(e.target.value)}
-            value={folderName} 
+            value={folderName}
             className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
             type="text"
           />
           <input
-            placeholder="Path"
+            placeholder="Parentid"
             onChange={(e) => setParentId(e.target.value)}
-            value={parentId} 
+            value={parentId}
             className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
             type="text"
           />

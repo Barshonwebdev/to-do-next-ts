@@ -19,14 +19,14 @@ if (!cached) {
 
 async function connectDB() {
   if (cached.conn) {
-    return cached.conn; 
+    return cached.conn;
   }
-  
+
   if (!cached.promise) {
     const opts = {
-      bufferCommands: false, 
+      bufferCommands: false,
     };
-    
+
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;
     });
@@ -35,4 +35,4 @@ async function connectDB() {
   return cached.conn;
 }
 
-export default connectDB; 
+export default connectDB;
