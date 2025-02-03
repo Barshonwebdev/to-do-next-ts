@@ -4,48 +4,59 @@ import { Modal } from "antd";
 import { useEffect, useState } from "react";
 import "@ant-design/v5-patch-for-react-19";
 import { postFolder, readFolders } from "./action";
+import { deleteFolder } from "./[id]/action";
 
-type TCreateFolder= {
-    name:string,
-    
-}
+type Folder = {
+  _id: string;
+  name: string;
+};
+type TCreateFolder = {
+  name: string;
+};
 
 export default function folderStructure() {
-  const [children, setChildren] = useState([]);
+  const [children, setChildren] = useState<Folder[]>([]);
   const [clicked, setClicked] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-      async function fetchTasks() {
-        // server action
-        const data = await readFolders();
-        setChildren(data);
-      }
-      fetchTasks();
-    }, []);
-  
-  
-    async function addFolder(folder: TCreateFolder) {
-        // server action
-        await postFolder(folder);
-        setFolderName('');
-        // server action
-        const data = await readFolders();
-        setChildren(data);
-      };
-      const handleAddFolder=()=>{
-        if (folderName.trim() === "") return;
-        const newFolder = {
-          name: folderName,
-        };
-        addFolder(newFolder);
-        setIsModalOpen(false);
-      }
+    async function fetchTasks() {
+      // server action
+      const data = await readFolders();
+      setChildren(data);
+    }
+    fetchTasks();
+  }, []);
+
+  async function addFolder(folder: TCreateFolder) {
+    // server action
+    await postFolder(folder);
+    setFolderName("");
+    // server action
+    const data = await readFolders();
+    setChildren(data);
+  }
+  const handleAddFolder = () => {
+    if (folderName.trim() === "") return;
+    const newFolder = {
+      name: folderName,
+    };
+    addFolder(newFolder);
+    setIsModalOpen(false);
+  };
+
 
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+  async function deleteFolderfunc(id: string) {
+      await deleteFolder(id);
+  
+      const data = await readFolders();
+      setChildren(data);
+    }
 
   return (
     <div>
@@ -63,15 +74,26 @@ export default function folderStructure() {
           </button>
         </div>
         <div className="mx-10 my-3">
-          
-            {
-                children.map(child=>(
-                    <div key={child._id}>
-                        <p>{child.name}</p>
-                    </div>
-                 ) )
-            }
-        
+          {children.map((child) => (
+            <div className="flex items-center justify-between space-y-3" key={child._id}>
+                <div className="flex space-x-1">
+                <p>{child.name}</p>
+                <button
+                onClick={()=>deleteFolderfunc(child?._id)}
+                className="rounded-lg bg-red-500 px-1 py-1 text-xs font-bold text-white"
+              >
+                Remove
+              </button>
+                </div>
+              
+              <button
+                onClick={() => showModal()}
+                className="rounded-lg bg-green-500 px-1 py-1 text-xs font-bold text-white"
+              >
+                New +
+              </button>
+            </div>
+          ))}
         </div>
       </div>
       {/* modal  */}
@@ -80,9 +102,10 @@ export default function folderStructure() {
           title="Create Folder"
           open={isModalOpen}
           onOk={handleAddFolder}
-          onCancel={() => {setIsModalOpen(false)
+          onCancel={() => {
+            setIsModalOpen(false);
 
-        setFolderName('');
+            setFolderName("");
           }}
         >
           <input
