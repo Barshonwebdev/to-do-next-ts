@@ -3,15 +3,16 @@
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 import "@ant-design/v5-patch-for-react-19";
-import { postFolder, readFolders } from "./action";
-import { deleteFolder } from "./[id]/action";
+import { deleteFolder, postFolder, readFolders } from "./action";
 
 type Folder = {
-  _id: string;
-  name: string;
+  _id: string,
+  name: string,
+  parentId:string,
 };
 type TCreateFolder = {
-  name: string;
+  name: string,
+  parentId:string,
 };
 
 export default function folderStructure() {
@@ -19,6 +20,7 @@ export default function folderStructure() {
   const [clicked, setClicked] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [parentId,setParentId]=useState('');
 
   useEffect(() => {
     async function fetchFolders() {
@@ -34,13 +36,14 @@ export default function folderStructure() {
     await postFolder(folder);
     setFolderName("");
     // server action
-    const data = await readFolders();
+    const data = await readFolders(); 
     setChildren(data);
   }
   const handleAddFolder = () => {
     if (folderName.trim() === "") return;
     const newFolder = {
       name: folderName,
+      parentId:""
     };
     addFolder(newFolder);
     setIsModalOpen(false);
@@ -80,6 +83,7 @@ export default function folderStructure() {
             >
               <div className="flex space-x-1">
                 <p>{child.name}</p>
+                <p>{child.parentId}</p>
                 <button
                   onClick={() => deleteFolderfunc(child?._id)}
                   className="rounded-lg bg-red-500 px-1 py-1 text-xs font-bold text-white"
@@ -106,14 +110,20 @@ export default function folderStructure() {
           onOk={handleAddFolder}
           onCancel={() => {
             setIsModalOpen(false);
-
             setFolderName("");
           }}
         >
           <input
             placeholder="Folder Name"
             onChange={(e) => setFolderName(e.target.value)}
-            value={folderName}
+            value={folderName} 
+            className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
+            type="text"
+          />
+          <input
+            placeholder="Path"
+            onChange={(e) => setParentId(e.target.value)}
+            value={parentId} 
             className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
             type="text"
           />

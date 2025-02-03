@@ -4,7 +4,8 @@ import FolderModel from "@/models/Folders";
 import connectDB from "../cache/cacheFolderDb";
 
 type CreateFolder = {
-  name: string;
+  name: string,
+  parentId:string,
 };
 
 export async function readFolders() {
@@ -17,5 +18,17 @@ export async function readFolders() {
 
 export async function postFolder(folder: CreateFolder) {
   await connectDB();
-  const newTask = await FolderModel.create({ name: folder.name });
+  const newTask = await FolderModel.create({ name: folder.name, parentId:folder.parentId });
 }
+
+export async function deleteFolder(id: string) {
+    if (!id) return null;
+    await connectDB();
+    const result = await FolderModel.deleteOne({ _id: id });
+    console.log(result);
+    if (result.deletedCount === 1) {
+      return { message: " deletion successful" };
+    } else {
+      return { message: "folder not deleted" };
+    }
+  }

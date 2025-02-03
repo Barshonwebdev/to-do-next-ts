@@ -1,14 +1,12 @@
 import mongoose, { Model } from "mongoose";
 type TFolderModel={
     name:string,
-    // path:string,
-    // children:TFolderModel
+     parentId:string,
 };
 
 const folderSchema= new mongoose.Schema<TFolderModel>({
     name:{type:String,required:true},
-    // path:{type:String,required:true},
-    // children:{type:{},required:true}
+     parentId:{type:String,required:true},
 });
 
 const FolderModel:Model<TFolderModel>=mongoose.models.FolderModel || mongoose.model('FolderModel', folderSchema);
