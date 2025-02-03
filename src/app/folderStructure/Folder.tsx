@@ -6,7 +6,7 @@ import { readFolders } from "./action";
 type Folder = {
     _id: string;
     name: string;
-    parentId: string;
+    parentId: string | null;
   };
 export  default  function FolderComponent({folder,deleteFolderfunc,showModal,parentId}) {
   
