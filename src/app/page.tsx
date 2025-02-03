@@ -106,7 +106,7 @@ export default function Todo() {
   async function aggregateTask(){
    const data= await aggregatePipelinefunc();
    console.log(data);
-   setAggData(data)
+   setAggData(data);
   }
   return (
     <div className="mx-auto flex w-1/2 flex-col justify-center bg-gray-100 py-8">
