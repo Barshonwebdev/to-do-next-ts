@@ -11,6 +11,6 @@ export async function deleteFolder(id: string) {
     if (result.deletedCount === 1) {
       return { message: " deletion successful" };
     } else {
-      return { message: "task not deleted" };
+      return { message: "folder not deleted" };
     }
   }

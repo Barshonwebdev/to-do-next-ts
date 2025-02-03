@@ -21,12 +21,12 @@ export default function folderStructure() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    async function fetchTasks() {
+    async function fetchFolders() {
       // server action
       const data = await readFolders();
       setChildren(data);
     }
-    fetchTasks();
+    fetchFolders();
   }, []);
 
   async function addFolder(folder: TCreateFolder) {
@@ -46,17 +46,16 @@ export default function folderStructure() {
     setIsModalOpen(false);
   };
 
-
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   async function deleteFolderfunc(id: string) {
-      await deleteFolder(id);
-  
-      const data = await readFolders();
-      setChildren(data);
-    }
+    await deleteFolder(id);
+
+    const data = await readFolders();
+    setChildren(data);
+  }
 
   return (
     <div>
@@ -75,17 +74,20 @@ export default function folderStructure() {
         </div>
         <div className="mx-10 my-3">
           {children.map((child) => (
-            <div className="flex items-center justify-between space-y-3" key={child._id}>
-                <div className="flex space-x-1">
+            <div
+              className="flex items-center justify-between space-y-3"
+              key={child._id}
+            >
+              <div className="flex space-x-1">
                 <p>{child.name}</p>
                 <button
-                onClick={()=>deleteFolderfunc(child?._id)}
-                className="rounded-lg bg-red-500 px-1 py-1 text-xs font-bold text-white"
-              >
-                Remove
-              </button>
-                </div>
-              
+                  onClick={() => deleteFolderfunc(child?._id)}
+                  className="rounded-lg bg-red-500 px-1 py-1 text-xs font-bold text-white"
+                >
+                  Remove
+                </button>
+              </div>
+
               <button
                 onClick={() => showModal()}
                 className="rounded-lg bg-green-500 px-1 py-1 text-xs font-bold text-white"
