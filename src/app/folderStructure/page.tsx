@@ -71,7 +71,7 @@ export default function folderStructure() {
       <div className="mx-96 rounded-xl bg-gray-100 p-5">
         
 
-        <FolderComponent deleteFolderfunc={deleteFolderfunc} showModal={showModal} children={children}  />
+        <FolderComponent deleteFolderfunc={deleteFolderfunc} showModal={showModal} children={children} parentId={null}  />
       </div>
       {/* modal  */}
       <>
