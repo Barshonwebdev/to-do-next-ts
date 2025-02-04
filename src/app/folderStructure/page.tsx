@@ -32,6 +32,7 @@ export default function folderStructure() {
     }
     fetchFolders();
   }, []);
+  console.log(children);
 
   async function addFolder(folder: TCreateFolder) {
     // server action
@@ -70,7 +71,7 @@ export default function folderStructure() {
       <div className="mx-96 rounded-xl bg-gray-100 p-5">
         
 
-        <FolderComponent   />
+        <FolderComponent deleteFolderfunc={deleteFolderfunc} showModal={showModal} children={children}  />
       </div>
       {/* modal  */}
       <>

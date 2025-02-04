@@ -1,20 +1,18 @@
 import "@ant-design/v5-patch-for-react-19";
 
-export default function FolderComponent() {
+export default function FolderComponent({children,deleteFolderfunc,showModal}) {
   // const [children, setChildren] = useState<Folder[]>([]);
   //const[parentId,setParentId]=useState<null | String>(null);
+  console.log(children);
   return (
     <div>
-      {/* {
+      { 
         children.map(child=>(
-          <div>{child.name}</div>
-        ))
-      } */}
-      <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between">
           <div className="flex space-x-2">
-          <p>root</p>
+          <p>{child.name}</p>
           <button
-            onClick={() => deleteFolderfunc(folder?._id)}
+            onClick={() => deleteFolderfunc(child?._id)}
             className="rounded-lg bg-red-500 px-1 py-1 text-xs font-bold text-white"
           >
             Remove 
@@ -27,7 +25,10 @@ export default function FolderComponent() {
             New +
           </button>
         </div>
-    <div className="mx-10 my-3">
+        ))
+      } 
+      
+    {/* <div className="mx-10 my-3">
       <div className="flex items-center justify-between space-y-3">
         <div className="flex space-x-1">
           <p>{folder?.name}</p>
@@ -58,7 +59,7 @@ export default function FolderComponent() {
       ) : (
         <div></div>
       )}
-    </div>
+    </div> */}
     </div>
   );
 }
