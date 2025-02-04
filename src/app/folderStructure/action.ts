@@ -5,7 +5,7 @@ import connectDB from "../cache/cacheFolderDb";
 
 type CreateFolder = {
   name: string;
-  parentId: string;
+  parentId: string | null;
 };
 
 export async function readFolders() {
@@ -13,7 +13,7 @@ export async function readFolders() {
   const folders = await FolderModel.find({});
   const parsedData = JSON.parse(JSON.stringify(folders));
   console.log(parsedData);
-  return parsedData;
+  return parsedData; 
 }
 
 export async function postFolder(folder: CreateFolder) {

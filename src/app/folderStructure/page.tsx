@@ -4,7 +4,6 @@ import { Modal } from "antd";
 import { useEffect, useState } from "react";
 import "@ant-design/v5-patch-for-react-19";
 import { deleteFolder, postFolder, readFolders } from "./action";
-import Folders from "./Folder";
 import FolderComponent from "./Folder";
 
 type Folder = {
@@ -60,7 +59,7 @@ export default function folderStructure() {
     await deleteFolder(id);
 
     const data = await readFolders();
-    setChildren(data);
+    setChildren(data); 
   }
 
   return (
@@ -78,7 +77,12 @@ export default function folderStructure() {
             New +
           </button>
         </div>
-        <FolderComponent deleteFolderfunc={deleteFolderfunc} showModal={showModal} folder={FolderComponent} ></FolderComponent>
+        {
+        children?.map((child) => (
+          <div key={child._id}>
+            <FolderComponent showModal={showModal} deleteFolderfunc={()=>deleteFolderfunc(child._id)} folder={child} parentId={child._id} />
+          </div>
+        ))}
       </div>
       {/* modal  */}
       <>
@@ -88,7 +92,7 @@ export default function folderStructure() {
           onOk={handleAddFolder}
           onCancel={() => {
             setIsModalOpen(false);
-            setFolderName("");
+            setFolderName(""); 
           }}
         >
           <input
@@ -98,13 +102,7 @@ export default function folderStructure() {
             className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
             type="text"
           />
-          <input
-            placeholder="Parentid" 
-            onChange={(e) => setParentId(e.target.value)}
-            value={parentId}
-            className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
-            type="text"
-          />
+          
         </Modal>
       </>
     </div>
