@@ -6,7 +6,7 @@ type TFolderModel = {
 
 const folderSchema = new mongoose.Schema<TFolderModel>({
   name: { type: String,  },
-  parentId: { type: String },
+  parentId: { type: mongoose.Schema.Types.ObjectId, ref: "FolderModel" },
 });
 
 const FolderModel: Model<TFolderModel> =

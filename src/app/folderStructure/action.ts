@@ -12,7 +12,7 @@ export async function readFolders() {
   await connectDB();
   const folders = await FolderModel.find({});
   const parsedData = JSON.parse(JSON.stringify(folders));
-  console.log(parsedData);
+  //console.log(parsedData);
   return parsedData; 
 }
 

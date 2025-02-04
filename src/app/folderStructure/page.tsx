@@ -32,7 +32,7 @@ export default function folderStructure() {
     }
     fetchFolders();
   }, []);
-  console.log(children);
+  //console.log(children);
 
   async function addFolder(folder: TCreateFolder) {
     // server action
