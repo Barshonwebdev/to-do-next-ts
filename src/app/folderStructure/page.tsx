@@ -9,11 +9,11 @@ import FolderComponent from "./Folder";
 type Folder = {
   _id: string;
   name: string;
-  parentId: string;
+  parentId: string | null;
 };
 type TCreateFolder = {
   name: string;
-  parentId: string;
+  parentId: string | null;
 };
 
 export default function folderStructure() {
@@ -21,7 +21,8 @@ export default function folderStructure() {
   const [clicked, setClicked] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [parentId, setParentId] = useState("");
+  const [parentId, setParentId] = useState<null | string>(null); 
+  
 
   useEffect(() => {
     async function fetchFolders() {
@@ -36,7 +37,6 @@ export default function folderStructure() {
     // server action
     await postFolder(folder);
     setFolderName("");
-    setParentId("");
     // server action
     const data = await readFolders();
     setChildren(data);
@@ -55,11 +55,11 @@ export default function folderStructure() {
     setIsModalOpen(true);
   };
 
-  async function deleteFolderfunc(id: string) {
+  async function deleteFolderfunc(id: string | null) {
     await deleteFolder(id);
 
     const data = await readFolders();
-    setChildren(data); 
+    setChildren(data);
   }
 
   return (
@@ -68,21 +68,9 @@ export default function folderStructure() {
         Folder Structure Viewer
       </h1>
       <div className="mx-96 rounded-xl bg-gray-100 p-5">
-        <div className="flex items-center justify-between">
-          <p>root</p>
-          <button
-            onClick={() => showModal()}
-            className="rounded-lg bg-green-500 px-1 py-1 text-xs font-bold text-white"
-          >
-            New +
-          </button>
-        </div>
-        {
-        children?.map((child) => (
-          <div key={child._id}>
-            <FolderComponent showModal={showModal} deleteFolderfunc={()=>deleteFolderfunc(child._id)} folder={child} parentId={child._id} />
-          </div>
-        ))}
+        
+
+        <FolderComponent   />
       </div>
       {/* modal  */}
       <>
@@ -92,7 +80,7 @@ export default function folderStructure() {
           onOk={handleAddFolder}
           onCancel={() => {
             setIsModalOpen(false);
-            setFolderName(""); 
+            setFolderName("");
           }}
         >
           <input
@@ -102,7 +90,6 @@ export default function folderStructure() {
             className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
             type="text"
           />
-          
         </Modal>
       </>
     </div>
