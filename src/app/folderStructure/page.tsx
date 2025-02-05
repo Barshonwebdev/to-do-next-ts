@@ -21,14 +21,15 @@ export default function folderStructure() {
   const [clicked, setClicked] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [parentId, setParentId] = useState<null | string>(null); 
-  
+  const [root, setRoot] = useState();
 
   useEffect(() => {
     async function fetchFolders() {
       // server action
       const data = await readFolders();
       setChildren(data);
+      console.log(data);
+      setRoot(data.find((child) => !child.parentId));
     }
     fetchFolders();
   }, []);
@@ -69,9 +70,14 @@ export default function folderStructure() {
         Folder Structure Viewer
       </h1>
       <div className="mx-96 rounded-xl bg-gray-100 p-5">
-        
-
-        <FolderComponent deleteFolderfunc={deleteFolderfunc} showModal={showModal} children={children} parentId={null}  />
+        {root ? (
+          <FolderComponent
+            deleteFolderfunc={deleteFolderfunc}
+            showModal={showModal}
+            children={children}
+            parent={root}
+          />
+        ) : null}
       </div>
       {/* modal  */}
       <>
