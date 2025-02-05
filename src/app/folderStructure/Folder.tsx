@@ -1,4 +1,5 @@
 import "@ant-design/v5-patch-for-react-19";
+import Swal from "sweetalert2";
 
 export default function FolderComponent({
   children,
@@ -21,7 +22,7 @@ export default function FolderComponent({
           <div className="flex space-x-2">
             <p>{parent.name}</p>
             <button
-              onClick={() => deleteFolderfunc(parent?._id)}
+              onClick={() => {Swal.fire("Root directory deletion is prohibited!");}}
               className="rounded-lg bg-red-500 px-1 py-1 text-xs font-bold text-white"
             >
               Remove
