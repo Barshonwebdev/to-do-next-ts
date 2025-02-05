@@ -12,10 +12,10 @@ export default function FolderComponent({
   const filtered = children.filter((child) => child?.parentId === parent._id);
 
   return (
-    <div>
+    <div className="">
       {!parent?.parentId ? (
-        <>
-          <div className="flex space-x-2">
+        <div className="ms-5 mt-2">
+          <div className="flex space-x-2 ">
             <p>{parent.name}</p>
             <button
               onClick={() => deleteFolderfunc(parent?._id)}
@@ -30,12 +30,12 @@ export default function FolderComponent({
           >
             New +
           </button>
-        </>
+        </div>
       ) : null}
 
-      <div>
+      <div className=" ms-5 mt-2">
         {filtered?.map((child) => (
-          <div key={child?._id} className="flex items-center justify-between">
+          <div key={child?._id} className="flex items-center justify-between ms-5 mt-2 ">
             <div className="flex space-x-2">
               <p>{child.name}</p>
               <button

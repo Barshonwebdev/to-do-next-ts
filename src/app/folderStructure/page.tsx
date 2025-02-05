@@ -47,7 +47,7 @@ export default function folderStructure() {
     if (folderName.trim() === "") return;
     const newFolder = {
       name: folderName,
-      parentId: parentId,
+      parentId: root?._id,
     };
     addFolder(newFolder);
     setIsModalOpen(false);
@@ -69,6 +69,7 @@ export default function folderStructure() {
       <h1 className="my-4 text-center text-3xl text-indigo-500">
         Folder Structure Viewer
       </h1>
+      
       <div className="mx-96 rounded-xl bg-gray-100 p-5">
         {root ? (
           <FolderComponent
