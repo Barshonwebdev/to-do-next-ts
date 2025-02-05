@@ -8,9 +8,8 @@ export default function FolderComponent({
 }) {
   // const [children, setChildren] = useState<Folder[]>([]);
   //const[parentId,setParentId]=useState<null | String>(null);
-  console.log(parent);
   const filteredChildrenFolders = children.filter((child) => child?.parentId === parent._id);
-
+  console.log(filteredChildrenFolders);
   return (
     <div className="">
       {!parent?.parentId ? (

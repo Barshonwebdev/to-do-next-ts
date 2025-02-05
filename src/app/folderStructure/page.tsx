@@ -28,12 +28,12 @@ export default function folderStructure() {
       // server action
       const data = await readFolders();
        setAllFolders(data);
-      console.log(data);
+      //console.log(data);
       setRoot(data.find((child) => !child.parentId));
     }
     fetchFolders();
   }, []);
-  console.log(allFolders);
+  //console.log(allFolders);
 
   async function addFolder(folder: TCreateFolder) {
     // server action
