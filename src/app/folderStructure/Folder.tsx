@@ -8,11 +8,12 @@ export default function FolderComponent({
 }) {
   // const [children, setChildren] = useState<Folder[]>([]);
   //const[parentId,setParentId]=useState<null | String>(null);
-  console.log({ parent });
+
   const filteredChildrenFolders = children.filter(
-    (child) => child?.parentId === parent._id,
+    (child) => child?.parentId === parent._id, 
   );
   console.log(filteredChildrenFolders);
+  
   return (
     <div className="">
       {!parent?.parentId ? (
@@ -61,8 +62,8 @@ export default function FolderComponent({
             <div className="mx-5 my-5">
               <FolderComponent
                 deleteFolderfunc={deleteFolderfunc}
-                showModal={showModal}
-                children={filteredChildrenFolders}
+                showModal={showModal} 
+                children={children}
                 parent={child}
               ></FolderComponent>
             </div>

@@ -30,7 +30,7 @@ export default function folderStructure() {
       setAllFolders(data);
       //console.log(data);
       setRoot(data.find((child) => !child.parentId));
-      console.log(root);
+      
     }
     fetchFolders();
   }, []);
@@ -48,7 +48,7 @@ export default function folderStructure() {
     if (folderName.trim() === "") return;
     const newFolder = {
       name: folderName,
-      parentId: root?._id,
+      parentId:root?._id, 
     };
     addFolder(newFolder);
     setIsModalOpen(false);
@@ -59,7 +59,7 @@ export default function folderStructure() {
   };
 
   async function deleteFolderfunc(id: string | null) {
-    await deleteFolder(id);
+    await deleteFolder(id); 
 
     const data = await readFolders();
     setAllFolders(data);
@@ -78,6 +78,7 @@ export default function folderStructure() {
             showModal={showModal}
             children={allFolders}
             parent={root}
+            
           />
         ) : null}
       </div>
