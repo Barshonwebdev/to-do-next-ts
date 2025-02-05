@@ -57,7 +57,11 @@ export default function folderStructure() {
 
   const showModal = (id) => {
     setIsModalOpen(true);
-    setParent(id);
+    if(id!==undefined){
+      setParent(id);
+    }
+    else setParent(root);
+     
   };
 
   async function deleteFolderfunc(id: string | null) {
