@@ -5,7 +5,7 @@ import connectDB from "../cache/cacheFolderDb";
 
 type CreateFolder = {
   name: string;
-  parentId: string | null;
+  parentId: string | undefined;
 };
 
 export async function readFolders() {

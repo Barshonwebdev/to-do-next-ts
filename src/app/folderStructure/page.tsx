@@ -7,14 +7,24 @@ import { deleteFolder, postFolder, readFolders } from "./action";
 import FolderComponent from "./Folder";
 
 type Folder = {
+  id:string,
   _id: string;
   name: string;
-  parentId: string | null;
+  parentId: string | undefined;
 };
 type TCreateFolder = {
   name: string;
-  parentId: string | null;
+  parentId: string | undefined;
 };
+
+type Child = {
+  id:string,
+  _id: string;
+  name: string;
+  parentId: string | undefined;
+};
+
+
 
 export default function folderStructure() {
   const [allFolders, setAllFolders] = useState<Folder[]>([]);
@@ -30,7 +40,7 @@ export default function folderStructure() {
       const data = await readFolders();
       setAllFolders(data);
       //console.log(data);
-      setRoot(data.find((child) => !child.parentId));
+      setRoot(data.find((child: Child) => !child.parentId));
     }
     fetchFolders();
   }, []);
@@ -55,18 +65,15 @@ export default function folderStructure() {
     setIsModalOpen(false);
   };
 
-  const showModal = (id) => {
+  const showModal = (id: undefined) => {
     setIsModalOpen(true);
-    if(id!==undefined){
+    if (id !== undefined) {
       setParent(id);
-    }
-    else setParent(root);
-     
+    } else setParent(root);
   };
 
-  async function deleteFolderfunc(id: string | null) {
+  async function deleteFolderfunc(id: string) {
     await deleteFolder(id);
-
     const data = await readFolders();
     setAllFolders(data);
   }
@@ -82,7 +89,7 @@ export default function folderStructure() {
           <FolderComponent
             deleteFolderfunc={deleteFolderfunc}
             showModal={showModal}
-            children={allFolders}
+            children={allFolders} 
             parent={root}
           />
         ) : null}
