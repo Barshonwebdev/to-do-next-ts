@@ -36,7 +36,7 @@ export default function FolderComponent({
         </div>
       ) : null}
 
-      <div className="mt-5">
+      <div className="mt-5 ms-5">
         {filteredChildrenFolders?.map((child) => (
           <div
             key={child?._id}
