@@ -17,7 +17,7 @@ type TCreateFolder = {
 };
 
 export default function folderStructure() {
-  const [children, setChildren] = useState<Folder[]>([]);
+  const [allFolders, setAllFolders] = useState<Folder[]>([]);
   const [clicked, setClicked] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,13 +27,13 @@ export default function folderStructure() {
     async function fetchFolders() {
       // server action
       const data = await readFolders();
-      setChildren(data);
+       setAllFolders(data);
       console.log(data);
       setRoot(data.find((child) => !child.parentId));
     }
     fetchFolders();
   }, []);
-  //console.log(children);
+  console.log(allFolders);
 
   async function addFolder(folder: TCreateFolder) {
     // server action
@@ -41,7 +41,7 @@ export default function folderStructure() {
     setFolderName("");
     // server action
     const data = await readFolders();
-    setChildren(data);
+    setAllFolders(data);
   }
   const handleAddFolder = () => {
     if (folderName.trim() === "") return;
@@ -61,7 +61,7 @@ export default function folderStructure() {
     await deleteFolder(id);
 
     const data = await readFolders();
-    setChildren(data);
+    setAllFolders(data);
   }
 
   return (
@@ -75,7 +75,7 @@ export default function folderStructure() {
           <FolderComponent
             deleteFolderfunc={deleteFolderfunc}
             showModal={showModal}
-            children={children} 
+            children={allFolders} 
             parent={root}
           />
         ) : null}
