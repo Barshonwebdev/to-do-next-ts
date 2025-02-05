@@ -22,6 +22,7 @@ export default function folderStructure() {
   const [folderName, setFolderName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [root, setRoot] = useState();
+  const [parent, setParent] = useState();
 
   useEffect(() => {
     async function fetchFolders() {
@@ -30,7 +31,6 @@ export default function folderStructure() {
       setAllFolders(data);
       //console.log(data);
       setRoot(data.find((child) => !child.parentId));
-      
     }
     fetchFolders();
   }, []);
@@ -48,18 +48,20 @@ export default function folderStructure() {
     if (folderName.trim() === "") return;
     const newFolder = {
       name: folderName,
-      parentId:root?._id, 
+      parentId: parent,
     };
+    console.log(newFolder);
     addFolder(newFolder);
     setIsModalOpen(false);
   };
 
-  const showModal = () => {
+  const showModal = (id) => {
     setIsModalOpen(true);
+    setParent(id);
   };
 
   async function deleteFolderfunc(id: string | null) {
-    await deleteFolder(id); 
+    await deleteFolder(id);
 
     const data = await readFolders();
     setAllFolders(data);
@@ -78,7 +80,6 @@ export default function folderStructure() {
             showModal={showModal}
             children={allFolders}
             parent={root}
-            
           />
         ) : null}
       </div>

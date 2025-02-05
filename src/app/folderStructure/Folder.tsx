@@ -5,14 +5,16 @@ export default function FolderComponent({
   deleteFolderfunc,
   showModal,
   parent,
+  
 }) {
+  
   // const [children, setChildren] = useState<Folder[]>([]);
   //const[parentId,setParentId]=useState<null | String>(null);
 
   const filteredChildrenFolders = children.filter(
-    (child) => child?.parentId === parent._id, 
+    (child) => child?.parentId === parent?._id, 
   );
-  console.log(filteredChildrenFolders);
+  //console.log(filteredChildrenFolders);
   
   return (
     <div className="">
@@ -52,7 +54,9 @@ export default function FolderComponent({
                   Remove
                 </button>
                 <button
-                  onClick={showModal}
+                  onClick={()=>{showModal(child?._id);
+                    
+                  }}
                   className="rounded-lg bg-green-500 px-1 py-1 text-xs font-bold text-white"
                 >
                   New +
@@ -65,6 +69,7 @@ export default function FolderComponent({
                 showModal={showModal} 
                 children={children}
                 parent={child}
+                
               ></FolderComponent>
             </div>
           </div>
