@@ -27,9 +27,10 @@ export default function folderStructure() {
     async function fetchFolders() {
       // server action
       const data = await readFolders();
-       setAllFolders(data);
+      setAllFolders(data);
       //console.log(data);
       setRoot(data.find((child) => !child.parentId));
+      console.log(root);
     }
     fetchFolders();
   }, []);
@@ -69,13 +70,13 @@ export default function folderStructure() {
       <h1 className="my-4 text-center text-3xl text-indigo-500">
         Folder Structure Viewer
       </h1>
-      
+
       <div className="mx-96 rounded-xl bg-gray-100 p-5">
         {root ? (
           <FolderComponent
             deleteFolderfunc={deleteFolderfunc}
             showModal={showModal}
-            children={allFolders} 
+            children={allFolders}
             parent={root}
           />
         ) : null}
