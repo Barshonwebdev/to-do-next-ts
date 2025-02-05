@@ -75,7 +75,7 @@ export default function folderStructure() {
           <FolderComponent
             deleteFolderfunc={deleteFolderfunc}
             showModal={showModal}
-            children={children}
+            children={children} 
             parent={root}
           />
         ) : null}
