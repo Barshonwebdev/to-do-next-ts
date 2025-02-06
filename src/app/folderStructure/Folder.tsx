@@ -55,7 +55,7 @@ export default function FolderComponent({
               <div className="flex space-x-2">
                 <p>{child.name}</p>
                 <button
-                  onClick={() => deleteFolderfunc(child?._id)}
+                  onClick={() => deleteFolderfunc(child._id)}
                   className="rounded-lg bg-red-500 px-1 py-1 text-xs font-bold text-white"
                 >
                   Remove
