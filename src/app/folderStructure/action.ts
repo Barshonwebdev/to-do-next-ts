@@ -13,12 +13,13 @@ export async function readFolders() {
   const folders = await FolderModel.find({});
   const parsedData = JSON.parse(JSON.stringify(folders));
   //console.log(parsedData);
-  return parsedData; 
+  return parsedData;
 }
 
 export async function postFolder(folder: CreateFolder) {
+  console.log(folder);
   await connectDB();
-  const newTask = await FolderModel.create({
+  const newFolder = await FolderModel.create({
     name: folder.name,
     parentId: folder.parentId,
   });
