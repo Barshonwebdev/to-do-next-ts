@@ -19,7 +19,7 @@ export async function readFolders() {
 export async function postFolder(folder: CreateFolder) {
   console.log(folder);
   await connectDB();
-  const newFolder = await FolderModel.create({
+  await FolderModel.create({
     name: folder.name,
     parentId: folder.parentId,
   });
