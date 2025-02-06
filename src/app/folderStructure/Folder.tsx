@@ -1,31 +1,25 @@
 import "@ant-design/v5-patch-for-react-19";
 import Swal from "sweetalert2";
 
-
-
-type Child={
-  _id:string,
-  name:string,
-  parentId:string,
-} 
+type Child = {
+  _id: string;
+  name: string;
+  parentId: string;
+};
 export default function FolderComponent({
   children,
   deleteFolderfunc,
   showModal,
   parent,
-}:{
-  children:Child[],
-  deleteFolderfunc:Function,
-  showModal:Function,
-  parent: Child
+}: {
+  children: Child[];
+  deleteFolderfunc: Function;
+  showModal: Function;
+  parent: Child;
 }) {
-  // const [children, setChildren] = useState<Folder[]>([]);
-  //const[parentId,setParentId]=useState<null | String>(null);
-
   const filteredChildrenFolders = children.filter(
     (child) => child.parentId === parent._id,
   );
-  //console.log(filteredChildrenFolders);
 
   return (
     <div className="">
