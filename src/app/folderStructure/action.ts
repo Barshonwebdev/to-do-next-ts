@@ -30,7 +30,7 @@ export async function deleteFolder(id: string) {
   if (!id) return null;
   await connectDB();
   const result = await FolderModel.deleteOne({ _id: id });
-  //const children=await FolderModel.deleteMany({parentId:new ObjectId(id)});
+  //const deleteChildDocuments=await FolderModel.deleteMany({parentId:id});
   if (result.deletedCount === 1) {
     return { message: " deletion successful" };
   } else {
