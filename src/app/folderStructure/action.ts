@@ -2,7 +2,6 @@
 
 import FolderModel from "@/models/Folders";
 import connectDB from "../cache/cacheFolderDb";
-import { ObjectId } from "mongodb";
 
 type CreateFolder = {
   name: string;
@@ -18,7 +17,7 @@ export async function readFolders() {
 }
 
 export async function postFolder(folder: CreateFolder) {
-  console.log(folder);
+  //console.log(folder);
   await connectDB();
   await FolderModel.create({
     name: folder.name,
@@ -30,10 +29,18 @@ export async function deleteFolder(id: string) {
   if (!id) return null;
   await connectDB();
   const result = await FolderModel.deleteOne({ _id: id });
-  const deleteChildDocuments=await FolderModel.deleteMany({parentId:id});
+  deleteParentAndChild(id);
+
   if (result.deletedCount === 1) {
     return { message: " deletion successful" };
   } else {
     return { message: "folder not deleted" };
+  }
+  async function deleteParentAndChild(id: string | undefined) {
+    if (id !== undefined) {
+      const findFolders = await FolderModel.find({ parentId: id });
+      const deleteFolders = await FolderModel.deleteOne({ parentId: id });
+      deleteParentAndChild(findFolders[0]?._id);
+    }
   }
 }
