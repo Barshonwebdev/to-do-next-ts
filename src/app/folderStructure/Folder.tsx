@@ -48,7 +48,7 @@ export default function FolderComponent({
       <div className="ms-20 mt-5">
         {filteredChildrenFolders?.map((child) => (
           <div
-            key={child?._id}
+            key={child?._id} 
             className="items-center justify-between space-y-5"
           >
             <div className=" ">
@@ -62,11 +62,19 @@ export default function FolderComponent({
                 </button>
                 <button
                   onClick={() => {
-                    showModal(child);
+                    showModal(child,'add');
                   }}
                   className="rounded-lg bg-green-500 px-1 py-1 text-xs font-bold text-white"
                 >
                   New +
+                </button>
+                <button
+                  onClick={() => {
+                    showModal(child,'edit');
+                  }}
+                  className="rounded-lg bg-orange-400 px-1 py-1 text-xs font-bold text-white"
+                >
+                  Edit
                 </button>
               </div>
             </div>

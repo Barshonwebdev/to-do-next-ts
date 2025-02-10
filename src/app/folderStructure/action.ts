@@ -26,30 +26,45 @@ export async function postFolder(folder: CreateFolder) {
   });
 }
 
+async function deleteParentAndChild(id: string) {
+  if (id !== undefined) {
+    const findFolders = await FolderModel.find({ parentId: id });
+    for (const eachFolder of findFolders) {
+      const deleteChildFolder = await FolderModel.deleteOne({
+        _id: eachFolder._id,
+      });
+      await deleteParentAndChild(eachFolder._id.toString());
+    }
+  } else {
+    return null;
+  }
+}
 export async function deleteFolder(id: string) {
   if (!id) return null;
   await connectDB();
   const result = await FolderModel.deleteOne({ _id: id });
   deleteParentAndChild(id);
-  async function deleteParentAndChild(id: string) {
-    if (id !== undefined) {
-      const findFolders = await FolderModel.find({ parentId: id });
-      for (const eachFolder of findFolders) {
-        const deleteChildFolder = await FolderModel.deleteOne({
-          _id: eachFolder._id,
-        }); 
-       await deleteParentAndChild(eachFolder._id.toString());
-      }
-    }
-
-    else {
-      return null;
-    }
-  }
 
   if (result.deletedCount === 1) {
     return { message: " deletion successful" };
   } else {
     return { message: "folder not deleted" };
+  }
+}
+
+export async function putFolder(id: string, editName: string) {
+  if (!id) return null;
+  await connectDB();
+  const result = await FolderModel.updateOne(
+    { _id: id },
+    { $set: { name: editName } },
+  );
+
+  // validate if folder actually exists
+  console.log(result);
+  if (result.matchedCount === 1) {
+    return { message: "success" };
+  } else {
+    return { message: "folder not found" };
   }
 }

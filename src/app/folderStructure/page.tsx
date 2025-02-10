@@ -3,7 +3,7 @@
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 import "@ant-design/v5-patch-for-react-19";
-import { deleteFolder, postFolder, readFolders } from "./action";
+import { deleteFolder, postFolder, putFolder, readFolders } from "./action";
 import FolderComponent from "./Folder";
 
 type Folder = {
@@ -16,12 +16,15 @@ type TCreateFolder = {
   parentId: string | undefined;
 };
 
+
+
 export default function folderStructure() {
   const [allFolders, setAllFolders] = useState<Folder[]>([]);
   const [folderName, setFolderName] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [root, setRoot] = useState<Folder>();
   const [parent, setParent] = useState<Folder>();
+  const [addOrEdit, setAddOrEdit] = useState<string>("add");
 
   useEffect(() => {
     async function fetchFolders() {
@@ -41,6 +44,12 @@ export default function folderStructure() {
     const data = await readFolders();
     setAllFolders(data);
   }
+
+  async function putEditFolder(id:string,name:string){
+    await putFolder(id,name);
+    const data=await readFolders();
+    setAllFolders(data);
+  }
   const handleAddFolder = () => {
     if (folderName.trim() === "") return;
     const newFolder = {
@@ -52,10 +61,22 @@ export default function folderStructure() {
     setIsModalOpen(false);
   };
 
-  const showModal = (folder: Folder) => {
+  const handleEditFolder=(id:string)=>{
+    const editFolder={
+      name:folderName,
+    };
+    putEditFolder(id,editFolder.name);
+    setIsModalOpen(false);
+  }
+
+  const showModal = (folder: Folder, mode: string) => {
     console.log(folder);
     setIsModalOpen(true);
-
+    if (mode === "add") {
+      setAddOrEdit("add");
+    } else {
+      setAddOrEdit("edit");
+    }
     setParent(folder);
   };
 
@@ -83,23 +104,43 @@ export default function folderStructure() {
       </div>
       {/* modal  */}
       <>
-        <Modal
-          title="Create Folder"
-          open={isModalOpen}
-          onOk={handleAddFolder}
-          onCancel={() => {
-            setIsModalOpen(false);
-            setFolderName("");
-          }}
-        >
-          <input
-            placeholder="Folder Name"
-            onChange={(e) => setFolderName(e.target.value)}
-            value={folderName}
-            className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
-            type="text"
-          />
-        </Modal>
+        {addOrEdit === "add" ? (
+          <Modal
+            title="Create Folder"
+            open={isModalOpen}
+            onOk={handleAddFolder}
+            onCancel={() => {
+              setIsModalOpen(false);
+              setFolderName("");
+            }}
+          >
+            <input
+              placeholder="Folder Name"
+              onChange={(e) => setFolderName(e.target.value)}
+              value={folderName}
+              className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
+              type="text"
+            />
+          </Modal>
+        ) : (
+          <Modal
+            title="Edit Folder"
+            open={isModalOpen}
+            onOk={()=>handleEditFolder}
+            onCancel={() => {
+              setIsModalOpen(false);
+              setFolderName('');
+            }}
+          >
+            <input
+              placeholder="Folder Name"
+              onChange={(e) => setFolderName(e.target.value)}
+              value={folderName}
+              className="border-gray border-2 px-4 sm:mx-auto md:mx-0"
+              type="text"
+            />
+          </Modal>
+        )}
       </>
     </div>
   );
